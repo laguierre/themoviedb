@@ -2,6 +2,8 @@
 
 Themoviedb API App made with Flutter. Using JSON request from https://api.themoviedb.org/3/ using using Dribble and custom interfaces.
 The full video in my Youtube channel [link](https://youtube.com/shorts/25CfrKq259A) and my Flutter Demos App video list [link](https://www.youtube.com/playlist?list=PL29yTdfAdnEfQ1U0hRkFxqD-ei2ux8-Hk)
+Improved and added code to use Firebase, save my movies, series and my personal rating, change the language.
+
 - Animation Controller.
 - Text Controller.
 - Tween Animation.
@@ -23,9 +25,13 @@ The full video in my Youtube channel [link](https://youtube.com/shorts/25CfrKq25
 
 **Packages used:**
 - http: ^0.13.5
-- provider:
+- provider: ^6.0.3
 - auto_size_text: ^3.0.0
 - page_transition: ^2.0.9 [link](https://pub.dev/packages/page_transition)
+- flutter_rating_bar: ^4.0.1
+- cloud_firestore: ^4.0.3
+- font_awesome_flutter: ^10.2.1
+- flutter_slidable: ^2.0.0
 
 ## GIF
 <p align="center">
