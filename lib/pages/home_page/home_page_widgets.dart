@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/details_page/details_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
+import 'package:themoviedb/providers/top_button_provider.dart';
 
 class MovieCard extends StatelessWidget {
-  const MovieCard({Key? key, required this.movie, required this.index})
+  const MovieCard({Key? key, required this.movie, required this.index, required this.type})
       : super(key: key);
   final Movie movie;
   final int index;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class MovieCard extends StatelessWidget {
                             context,
                             PageTransition(
                                 type: PageTransitionType.bottomToTop,
-                                child: DetailsPage(movie: movie),
+                                child: DetailsPage(movie: movie, type: type),
                                 childCurrent: this));
                       },
                       child: PosterImage(image: movie.getPosterImg())),
@@ -219,6 +222,7 @@ class MovieListCards extends StatelessWidget {
                 child: MovieCard(
                   movie: movies![index],
                   index: index,
+                  type: Provider.of<TopButtonModel>(context).type,
                 ));
           } else if (index == pageValue.floor() ||
               index == pageValue.floor() - 1) {
@@ -227,17 +231,18 @@ class MovieListCards extends StatelessWidget {
                 child: MovieCard(
                   movie: movies![index],
                   index: index,
+                  type: Provider.of<TopButtonModel>(context).type,
                 ));
           } else {
             return MovieCard(
               movie: movies![index],
               index: index,
+              type: Provider.of<TopButtonModel>(context).type,
             );
           }
         });
   }
 }
-
 
 class BackgroundColor extends StatelessWidget {
   const BackgroundColor({

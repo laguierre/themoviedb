@@ -64,7 +64,6 @@ class _CustomSearchState extends State<CustomSearch> {
           Expanded(
             child: TextField(
               onChanged: (text) {
-                // Provider.of<MoviesProvider>(context, listen: false).query =        text;
               },
               focusNode: widget.focusNode,
               controller: widget.textController,
@@ -136,3 +135,32 @@ class CustomGIF extends StatelessWidget {
             width: 80, child: Image.asset('lib/assets/images/loading.gif')));
   }
 }
+
+
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF2D2C2C),
+        borderRadius: BorderRadius.circular(15),
+        //shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        padding: const EdgeInsets.only(left: 10),
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+}
+

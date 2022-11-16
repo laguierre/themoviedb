@@ -44,7 +44,6 @@ class _SearchMoviePageState extends State<SearchMoviePage>
   @override
   Widget build(BuildContext context) {
     final moviesProvider = Provider.of<MoviesProvider>(context);
-
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
@@ -61,9 +60,9 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                   moviesProvider.searchMovie();
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
-                onTapBack: () async {
+                onTapBack: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  await animationController.reverse();
+                  animationController.reverse();
                   Navigator.pop(context);
                 },
                 enabled: true,
@@ -80,13 +79,15 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Movie>> snapshot) {
                     return ListView.builder(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 0),
                         physics: const BouncingScrollPhysics(),
                         itemCount: moviesProvider.searchMoviesList.length,
                         itemBuilder: (context, index) {
                           var movie = moviesProvider.searchMoviesList[index];
-                          return SearchCard(movie: movie);
+                          return SearchCard(movie: movie, type: 'movie');
                         });
                   }))
         ],
@@ -96,90 +97,113 @@ class _SearchMoviePageState extends State<SearchMoviePage>
 }
 
 class SearchCard extends StatelessWidget {
-  const SearchCard({Key? key, required this.movie}) : super(key: key);
+  const SearchCard(
+      {Key? key, required this.movie, this.myRating = -1, required this.type})
+      : super(key: key);
   final Movie movie;
+  final double myRating;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: (){
-      Navigator.push(
-          context,
-          PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: DetailsPage(movie: movie),
-              childCurrent: this));
-    },
+
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.bottomToTop,
+                  child: DetailsPage(movie: movie, type: type),
+                  childCurrent: this));
+        },
         child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.white.withOpacity(0.3),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 0), // changes position of shadow
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            padding: const EdgeInsets.all(3),
-            height: 150,
-            width: 100,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: PosterImage(
-                image: movie.getPosterImg(),
+                padding: const EdgeInsets.all(3),
+                height: 150,
+                width: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: PosterImage(
+                    image: movie.getPosterImg(),
+                  ),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  movie.title,
-                  minFontSize: 16,
-                  stepGranularity: 4,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  movie.originalTitle,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                const SizedBox(height: 8),
-                Row(
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.star, color: Colors.yellowAccent),
-                    const SizedBox(width: 5),
+                    AutoSizeText(
+                      movie.title,
+                      minFontSize: 16,
+                      stepGranularity: 4,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    AutoSizeText(
+                      minFontSize: 8,
+                      stepGranularity: 4,
+                      movie.originalTitle,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.yellowAccent),
+                        const SizedBox(width: 5),
+                        Text(
+                          movie.voteAverage.toStringAsFixed(1),
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                        const SizedBox(width: 15),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
                     Text(
-                      movie.voteAverage.toString(),
+                      'Release date: ${movie.releaseDate.substring(0, 7)}',
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Release date: ${movie.releaseDate.substring(0,7)}',
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    ));
+              ),
+              Column(
+                children: [
+                  if (myRating > 1)
+                    Text(emojis[myRating.toInt() - 1],
+                        style: const TextStyle(fontSize: 35)),
+                  const SizedBox(height: 10),
+                  if (type != '')
+                    Text(type.toUpperCase(),
+                        style:
+                            TextStyle(color: kTextDetailsColor, fontSize: 15)),
+                ],
+              ),
+              const SizedBox(width: 20)
+            ],
+          ),
+        ));
   }
 }

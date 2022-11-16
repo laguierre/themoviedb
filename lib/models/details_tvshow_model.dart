@@ -91,12 +91,13 @@ class TvShowDetails {
     languages =
         (json['languages'] as List?)?.map((dynamic e) => e as String).toList();
     lastAirDate = json['last_air_date'];
+    name = json['name'];
     /*lastEpisodeToAir =
         (json['last_episode_to_air'] as Map<String, dynamic>?) != null
             ? LastEpisodeToAir.fromJson(
                 json['last_episode_to_air'] as Map<String, dynamic>)
             : null;*/
-    name = json['name'];
+
     /*nextEpisodeToAir =
         (json['next_episode_to_air'] as Map<String, dynamic>?) != null
             ? NextEpisodeToAir.fromJson(

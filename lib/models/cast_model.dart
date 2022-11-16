@@ -2,8 +2,6 @@ class Cast {
   List<Actor> performer = [];
 
   Cast.fromJsonList(List<dynamic> jsonList) {
-    //if (jsonList == null) return;
-
     for (var item in jsonList) {
       final actor = Actor.fromJsonMap(item);
       performer.add(actor);

@@ -1,15 +1,3 @@
-/*class Movies {
-  List<Movie> items = [];
-
-  Movies.fromJsonList(List<dynamic> jsonList) {
-    if (jsonList == null) return;
-
-    for (var item in jsonList) {
-      final movie = Movie.fromJsonMap(item);
-      items.add(movie);
-    }
-  }
-}*/
 class Movie {
   Movie({
     required this.voteCount,

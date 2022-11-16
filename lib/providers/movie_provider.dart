@@ -12,6 +12,13 @@ class MoviesProvider extends ChangeNotifier {
   int _popularPage = 1;
   int _popularTvShowPage = 1;
   String _duration = 'N/A';
+  String _type = 'movie';
+
+  String get type => _type;
+  set type(String type){
+    _type = type;
+    notifyListeners();
+  }
 
   List<String> _btnNamesText = ['En cine', 'Tv Show'];
 
@@ -19,6 +26,7 @@ class MoviesProvider extends ChangeNotifier {
 
   set btnNamesText(List<String> btnNamesText) {
     _btnNamesText = btnNamesText;
+    notifyListeners();
   }
 
   String _language = 'es-ES';
@@ -31,7 +39,6 @@ class MoviesProvider extends ChangeNotifier {
       _btnNamesText = ['En cine', 'Tv Show'];
     } else {
       _btnNamesText = ['Cinema', 'Tv Show'];
-      ;
     }
     notifyListeners();
   }
@@ -122,7 +129,6 @@ class MoviesProvider extends ChangeNotifier {
     }
     var service = TheMovieApiService();
     movies = await service.getNowPlaying(_language);
-    //notifyListeners();
     return movies;
   }
 
@@ -132,12 +138,10 @@ class MoviesProvider extends ChangeNotifier {
     }
     var service = TheMovieApiService();
     movies = await service.getPopularMoviesService(_popularPage, _language);
-    //notifyListeners();
     return movies;
   }
 
   Future<List<Movie>> getTvShowPopular() async {
-
     var service = TheMovieApiService();
     _tvShow = await service.getTvShow(_popularTvShowPage, _language);
     if (_tvShow.isNotEmpty) {
@@ -185,6 +189,18 @@ class MoviesProvider extends ChangeNotifier {
     _query = query;
     _searchMoviesList = await service.getSearchMovies(_query, _language);
     return _searchMoviesList;
+  }
+
+  Future<MovieDetails> searchMovieById(int id) async {
+    var service = TheMovieApiService();
+    var movie = await service.getSearchMovieById(id.toString(), _language);
+    return movie;
+  }
+
+  Future<MovieDetails> searchTvShowById(int id) async {
+    var service = TheMovieApiService();
+    var movie = await service.getSearchTvShowById(id.toString(), _language);
+    return movie;
   }
 
   void refreshPopularMovies() async {
@@ -322,14 +338,12 @@ class PageViewProvider extends ChangeNotifier {
   double _pageValue = 0.0;
 
   int get pageIndex => _pageIndex;
-
   set pageIndex(int pageIndex) {
     _pageIndex = pageIndex;
     notifyListeners();
   }
 
   double get pageValue => _pageValue;
-
   set pageValue(double pageValue) {
     _pageValue = pageValue;
     notifyListeners();

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/constants.dart';
+import 'package:themoviedb/models/movie_firebase_model.dart';
 import 'package:themoviedb/models/movie_model.dart';
+import 'package:themoviedb/pages/personal_collection_page/personal_collection_page.dart';
 import 'package:themoviedb/pages/search_page/search_movie_page.dart';
 import 'package:themoviedb/pages/widgets.dart';
+import 'package:themoviedb/providers/collection_provider.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
 import 'package:themoviedb/providers/top_button_provider.dart';
+import 'package:themoviedb/services/firebase_services.dart';
 import 'home_page_widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,6 +45,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     )
       ..addListener(animationAddListener)
       ..forward();
+
     super.initState();
   }
 
@@ -79,164 +85,175 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final moviesProvider = Provider.of<MoviesProvider>(context);
     int number = Provider.of<TopButtonModel>(context).number;
     String language = Provider.of<MoviesProvider>(context).language;
-    String languageSearch = language == 'es-ES' ? "En cine" : "Now Playing";
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
-      body: FutureBuilder(
-        future: moviesProvider.getPopularMovies(),
-        builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
+      body: StreamBuilder<List<MovieCollection>>(
+        stream: readMovies(),
+        builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final movies = snapshot.data;
-            return Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                BackgroundImage(
-                    backgroundPageController: backgroundPageController,
-                    pageValue: pageValue,
-                    movies: movies!),
-                const BackgroundColor(),
-                MovieListCards(
-                    pageController: pageController,
-                    movies: movies,
-                    pageValue: pageValue),
-                Positioned(
-                    right: 20,
-                    left: 20,
-                    top: 40,
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              elevation: 0,
-                              shadowColor: Colors.transparent,
-                            ).copyWith(
-                                elevation:
-                                    MaterialStateProperty.all<double>(0)),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: const SearchMoviePage(),
-                                  )).then((_) => animationController.forward());
-                            },
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.search,
+            Provider.of<MyCollectionProvider>(context).movieCollection =
+                snapshot.requireData;
+          }
+          return FutureBuilder(
+            future: moviesProvider.getPopularMovies(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
+              if (snapshot.hasData) {
+                final movies = snapshot.data;
+                return Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    BackgroundImage(
+                        backgroundPageController: backgroundPageController,
+                        pageValue: pageValue,
+                        movies: movies!),
+                    const BackgroundColor(),
+                    MovieListCards(
+                        pageController: pageController,
+                        movies: movies,
+                        pageValue: pageValue),
+                    Positioned(
+                        right: 20,
+                        left: 20,
+                        top: 40,
+                        child: Row(
+                          children: [
+                            IconButton(
+                                icon: const Icon(
+                                  Icons.video_collection_rounded,
+                                  color: Colors.white,
                                   size: 34,
                                 ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  languageSearch,
-                                  style: const TextStyle(fontSize: 28),
-                                ),
-                              ],
-                            )),
-                        const Spacer(),
-                        Container(
-                            decoration: BoxDecoration(
-                                border: language == 'es-ES'
-                                    ? Border.all(color: Colors.white, width: 2)
-                                    : Border.all(
-                                        color: Colors.transparent, width: 2),
-                                shape: BoxShape.circle),
-                            child: IconButton(
                                 onPressed: () {
-                                  Provider.of<MoviesProvider>(context,
-                                          listen: false)
-                                      .language = 'es-ES';
-                                  refreshCards(number, moviesProvider);
-
-                                  /*pageController.animateToPage(0,
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      curve: Curves.linear);*/
-                                },
-                                icon:
-                                    Image.asset('lib/assets/images/esp.png'))),
-                        Container(
-                            decoration: BoxDecoration(
-                                border: language != 'es-ES'
-                                    ? Border.all(color: Colors.white, width: 2)
-                                    : Border.all(
-                                        color: Colors.transparent, width: 2),
-                                shape: BoxShape.circle),
-                            child: IconButton(
-                                onPressed: () {
-                                  Provider.of<MoviesProvider>(context,
-                                          listen: false)
-                                      .language = 'en-EN';
-                                  refreshCards(number, moviesProvider);
-                                },
-                                icon: Image.asset('lib/assets/images/uk.png'))),
-                      ],
-                    )),
-                Positioned(
-                    right: 20,
-                    left: 20,
-                    top: 120,
-                    height: 40,
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: Provider.of<MoviesProvider>(context)
-                            .btnNamesText
-                            .length,
-                        itemBuilder: (context, i) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.black,
-                                    side: number == i
-                                        ? const BorderSide(
-                                            width: 2, color: Colors.white)
-                                        : const BorderSide(
-                                            width: 2, color: Colors.white),
-                                    shadowColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                    ),
-                                    backgroundColor: number == i
-                                        ? Colors.white
-                                        : Colors.transparent,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25)),
-                                child: Text(
-                                  Provider.of<MoviesProvider>(context,
-                                          listen: false)
-                                      .btnNamesText[i],
-                                  style: TextStyle(
-                                      color: number == i
-                                          ? Colors.black
-                                          : Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  Provider.of<TopButtonModel>(context,
-                                          listen: false)
-                                      .number = i;
-                                  refreshCards(i, moviesProvider);
-                                  animateToStart();
+                                  Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type: PageTransitionType.fade,
+                                            child: const MyPersonalCollection(),
+                                          ))
+                                      .then(
+                                          (_) => animationController.forward());
                                 }),
-                          );
-                        }))
-              ],
-            );
-          } else {
-            return const CustomGIF();
-          }
+                            const SizedBox(width: 10),
+                            IconButton(
+                                icon: const Icon(
+                                  Icons.search,
+                                  color: Colors.white,
+                                  size: 34,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type: PageTransitionType.fade,
+                                            child: const SearchMoviePage(),
+                                          ))
+                                      .then(
+                                          (_) => animationController.forward());
+                                }),
+                            const Spacer(),
+                            Container(
+                                decoration: BoxDecoration(
+                                    border: language == 'es-ES'
+                                        ? Border.all(
+                                            color: Colors.white, width: 2)
+                                        : Border.all(
+                                            color: Colors.transparent,
+                                            width: 2),
+                                    shape: BoxShape.circle),
+                                child: IconButton(
+                                    onPressed: () {
+                                      Provider.of<MoviesProvider>(context,
+                                              listen: false)
+                                          .language = 'es-ES';
+                                      refreshCards(number, moviesProvider);
+                                      animateToStart();
+                                    },
+                                    icon: Image.asset(
+                                        'lib/assets/images/esp.png'))),
+                            Container(
+                                decoration: BoxDecoration(
+                                    border: language != 'es-ES'
+                                        ? Border.all(
+                                            color: Colors.white, width: 2)
+                                        : Border.all(
+                                            color: Colors.transparent,
+                                            width: 2),
+                                    shape: BoxShape.circle),
+                                child: IconButton(
+                                    onPressed: () {
+                                      Provider.of<MoviesProvider>(context,
+                                              listen: false)
+                                          .language = 'en-EN';
+                                      refreshCards(number, moviesProvider);
+                                    },
+                                    icon: Image.asset(
+                                        'lib/assets/images/uk.png'))),
+                          ],
+                        )),
+                    Positioned(
+                        right: 20,
+                        left: 20,
+                        top: 120,
+                        height: 40,
+                        child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: Provider.of<MoviesProvider>(context)
+                                .btnNamesText
+                                .length,
+                            itemBuilder: (context, i) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.black,
+                                        side: number == i
+                                            ? const BorderSide(
+                                                width: 2, color: Colors.white)
+                                            : const BorderSide(
+                                                width: 2, color: Colors.white),
+                                        shadowColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                        ),
+                                        backgroundColor: number == i
+                                            ? Colors.white
+                                            : Colors.transparent,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25)),
+                                    child: Text(
+                                      Provider.of<MoviesProvider>(context,
+                                              listen: false)
+                                          .btnNamesText[i],
+                                      style: TextStyle(
+                                          color: number == i
+                                              ? Colors.black
+                                              : Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {
+                                      Provider.of<TopButtonModel>(context,
+                                              listen: false)
+                                          .number = i;
+                                      refreshCards(i, moviesProvider);
+                                      animateToStart();
+                                    }),
+                              );
+                            }))
+                  ],
+                );
+              } else {
+                return const CustomGIF();
+              }
+            },
+          );
         },
       ),
     );
@@ -245,20 +262,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void animateToStart() {
     setState(() {
       pageController.animateToPage(0,
-          duration:
-              const Duration(milliseconds: 500),
-          curve: Curves.linear);
+          duration: const Duration(milliseconds: 500), curve: Curves.linear);
     });
   }
 
   void refreshCards(int number, MoviesProvider moviesProvider) {
+    String type = '';
     if (number == 0) {
-      Provider.of<TopButtonModel>(context, listen: false).type = 'movie';
+      type = 'movie';
       moviesProvider.clearListMovies();
       moviesProvider.getPopularMovies();
     } else {
-      Provider.of<TopButtonModel>(context, listen: false).type = 'tv';
+      type = 'tv';
       moviesProvider.getTvShowPopular();
     }
+    Provider.of<TopButtonModel>(context, listen: false).type = type;
+    Provider.of<MoviesProvider>(context, listen: false).type = type;
   }
 }
