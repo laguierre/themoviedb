@@ -34,11 +34,13 @@ The full video in my Youtube channel [link](https://youtube.com/shorts/25CfrKq25
 
 ## Screenshots
 <p align="center">
-<img src="screenshots\Screenshot_20221030_121213.png" height="700">
+<img src="screenshots\Screenshot_20221116_202435.png" height="700">
 <img src="screenshots\Screenshot_20221030_121244.png" height="700">
 <img src="screenshots\Screenshot_20221030_121312.png" height="700">
 <img src="screenshots\Screenshot_20221030_121329.png" height="700">
 <img src="screenshots\Screenshot_20221030_121415.png" height="700">
 <img src="screenshots\Screenshot_20221030_121454.png" height="700">
+<img src="screenshots\Screenshot_20221116_202547.png" height="700">
+<img src="screenshots\Screenshot_20221116_202607.png" height="700">
 </p>
 
