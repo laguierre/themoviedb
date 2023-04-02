@@ -42,8 +42,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
             ///Get Movie or Tv Show Details
             child: FutureBuilder(
-                future: moviesProvider.getDetails(widget.movie.id.toString(),
-                    widget.type),
+                future: moviesProvider.getDetails(
+                    widget.movie.id.toString(), widget.type),
                 builder: (context, AsyncSnapshot<MovieDetails> snapshot) {
                   if (snapshot.hasData) {
                     ///Get Movie or Tv Show Cast
@@ -54,7 +54,6 @@ class _DetailsPageState extends State<DetailsPage> {
                             (context, AsyncSnapshot<List<Actor>> snapshot) {
                           if ((snapshot.hasData)) {
                             final performers = snapshot.data;
-
                             return SingleChildScrollView(
                                 physics: const BouncingScrollPhysics(),
                                 child: Column(children: [

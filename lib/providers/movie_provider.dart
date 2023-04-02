@@ -47,9 +47,9 @@ class MoviesProvider extends ChangeNotifier {
 
   List<Movie> get searchMoviesList => _searchMoviesList;
 
-  set searchMovies(List<Movie> movies) {
-    _searchMoviesList = movies;
-    notifyListeners();
+  set searchMovies(List<Movie> searchMoviesList) {
+    _searchMoviesList = searchMoviesList;
+    //notifyListeners();
   }
 
   late MovieDetails _movieDetails;
@@ -77,14 +77,7 @@ class MoviesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _query = "";
-
-  String get query => _query;
-
-  set query(String query) {
-    _query = query;
-    notifyListeners();
-  }
+  String query = "";
 
   List<Movie> _movies = [];
 
@@ -163,14 +156,14 @@ class MoviesProvider extends ChangeNotifier {
             overview: "",
             releaseDate: "");
 
-        buffer.backdropPath = _tvShow[i].backdropPath!;
+        buffer.backdropPath = _tvShow[i].backdropPath?? '';
         buffer.id = _tvShow[i].id!;
         buffer.title = _tvShow[i].originalName!;
         buffer.originalTitle = _tvShow[i].originalName!;
         buffer.originalLanguage = _tvShow[i].originalLanguage!;
         buffer.overview = _tvShow[i].overview!;
         buffer.voteAverage = _tvShow[i].voteAverage!;
-        buffer.posterPath = _tvShow[i].posterPath!;
+        buffer.posterPath = _tvShow[i].posterPath?? '';
         buffer.voteCount = _tvShow[i].voteCount!;
         buffer.popularity = _tvShow[i].popularity!;
         buffer.genreIds = _tvShow[i].genreIds!;
@@ -181,15 +174,19 @@ class MoviesProvider extends ChangeNotifier {
     return movies;
   }
 
-  Future<List<Movie>> searchMovie() async {
-    /*if (movies.isNotEmpty) {
-      return _searchMovies;
-    }*/
+  void searchMovie() async {
     var service = TheMovieApiService();
-    _query = query;
-    _searchMoviesList = await service.getSearchMovies(_query, _language);
-    return _searchMoviesList;
+    _searchMoviesList = await service.getSearchMovies(query, _language);
+    notifyListeners();
+    //return _searchMoviesList;
   }
+
+  /*Future<List<Movie>> searchMovie() async {
+    var service = TheMovieApiService();
+    //_searchMoviesList = await service.getSearchMovies(_query, _language);
+    return await service.getSearchMovies(_query, _language);
+    //return _searchMoviesList;
+  }*/
 
   Future<MovieDetails> searchMovieById(int id) async {
     var service = TheMovieApiService();
@@ -286,14 +283,17 @@ class MoviesProvider extends ChangeNotifier {
 
   void clearSearchList() {
     _searchMoviesList = [];
+    notifyListeners();
   }
 
   void clearListMovies() {
     _movies = [];
+    notifyListeners();
   }
 
   void clearPopularPage() {
     _popularPage = 0;
+    notifyListeners();
   }
 
   void tvShow2MovieList() {

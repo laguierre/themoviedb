@@ -11,6 +11,8 @@ class TheMovieApiService {
   ///Get Popular Movies Service (...3/movie/popular)
   Future<List<Movie>> getPopularMoviesService(
       int popularPage, String language) async {
+    List<Movie> movieList = [];
+
     final url = Uri.http(urlTheMovieDB, '3/movie/popular', {
       'api_key': apiKey,
       'language': language,
@@ -19,13 +21,11 @@ class TheMovieApiService {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final decoded = await json.decode(response.body);
-      List<Movie> movieList = [];
       for (var movie in decoded['results']) {
         movieList.add(Movie.fromJsonMap(movie));
       }
-      return movieList;
     }
-    return [];
+    return movieList;
   }
 
   ///Get In Cimena Movies Service (...3/movie/now_playing)
@@ -126,9 +126,7 @@ class TheMovieApiService {
       movieDetails.video = false;
       movieDetails.voteAverage = tvShow.voteAverage;
       movieDetails.voteCount = tvShow.voteCount;
-
-      //print(decodedData);
-      return movieDetails; //movieDetails;
+      return movieDetails;
     }
   }
 
@@ -155,6 +153,7 @@ class TheMovieApiService {
       'query': query,
     });
     final response = await http.get(url);
+    print(url);
     if (response.statusCode == 200) {
       final decoded = await json.decode(response.body);
       for (var movie in decoded['results']) {

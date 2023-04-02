@@ -108,7 +108,6 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                       children: [
                         const SizedBox(width: 10),
                         Icon(Icons.search, color: kSearchColorTextField),
-
                         Expanded(
                           child: TextField(
                             onChanged: (text) {

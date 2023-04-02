@@ -53,7 +53,7 @@ class Actor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['adult'] = adult;
     data['gender'] = gender;
     data['id'] = id;

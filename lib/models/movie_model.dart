@@ -17,37 +17,37 @@ class Movie {
   });
 
   String uniqueId = '';
-  int voteCount;
-  int id;
-  bool video;
-  double voteAverage;
+  int voteCount = 0;
+  int id = 0;
+  bool video = false;
+  double voteAverage = 0.0;
   String title = '';
   double popularity;
   String posterPath = '';
   String originalLanguage = '';
   String originalTitle = '';
-  List<int> genreIds;
+  List<int> genreIds = [];
   String backdropPath = '';
-  bool adult;
+  bool adult = false;
   String overview = '';
   String releaseDate = '';
 
   factory Movie.fromJsonMap(dynamic json) => Movie(
-    voteCount : json['vote_count'],
-    id : json['id'],
-    video : json['video'] == null? "N/A" : json['video'],
-    voteAverage : json['vote_average'] / 1,
-    title : json['title'],
-    popularity : json['popularity'] / 1,
-    posterPath : json['poster_path'] == null? "N/A" : json['poster_path'],
-    originalLanguage : json['original_language'],
-    originalTitle : json['original_title'],
-    genreIds : json['genre_ids'].cast<int>(),
-    backdropPath : json['backdrop_path'] == null? "N/A" : json['backdrop_path'],
-    adult : json['adult'],
-    overview : json['overview'],
-    releaseDate : json['release_date'],
-  );
+        voteCount: json['vote_count'] ?? "N/A",
+        id: json['id'] ?? 0,
+        video: json['video'] ?? "N/A",
+        voteAverage: json['vote_average'] / 1,
+        title: json['title'] ?? "N/A",
+        popularity: json['popularity'] / 1,
+        posterPath: json['poster_path'] ?? '',
+        originalLanguage: json['original_language'] ?? "N/A",
+        originalTitle: json['original_title'] ?? "N/A",
+        genreIds: json['genre_ids'].cast<int>() ?? "N/A",
+        backdropPath: json['backdrop_path'] ?? '',
+        adult: json['adult'] ?? "N/A",
+        overview: json['overview'] ?? "N/A",
+        releaseDate: json['release_date'] ?? "N/A",
+      );
 
   getPosterImg() {
     if (posterPath.isEmpty) {

@@ -38,7 +38,7 @@ class TvShow {
     originalLanguage = json['original_language'];
     originalName = json['original_name'];
     overview = json['overview'];
-    popularity = json['popularity'];
+    popularity = json['popularity'] / 1;
     posterPath = json['poster_path'];
     voteAverage = json['vote_average'] / 1;
     voteCount = json['vote_count'];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:themoviedb/api_key.dart';
 import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/movie_firebase_model.dart';
 import 'package:themoviedb/models/movie_model.dart';
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
     pageController = PageController(
         initialPage: currentPage, viewportFraction: kViewportFraction)
       ..addListener(pageAddListener);
@@ -45,8 +47,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     )
       ..addListener(animationAddListener)
       ..forward();
-
-    super.initState();
+    authFirebase(dbEmail, dbPass);
   }
 
   void animationAddListener() {
@@ -86,7 +87,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     int number = Provider.of<TopButtonModel>(context).number;
     String language = Provider.of<MoviesProvider>(context).language;
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
@@ -146,6 +146,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   size: 34,
                                 ),
                                 onPressed: () {
+                                  moviesProvider.clearSearchList();
                                   Navigator.push(
                                           context,
                                           PageTransition(
@@ -239,6 +240,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onPressed: () {
+                                      Provider.of<MoviesProvider>(context, listen: false).popularPage = 1;
                                       Provider.of<TopButtonModel>(context,
                                               listen: false)
                                           .number = i;

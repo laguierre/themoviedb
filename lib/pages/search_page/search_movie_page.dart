@@ -7,6 +7,7 @@ import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/details_page/details_page.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
+import 'package:themoviedb/responsive.dart';
 
 class SearchMoviePage extends StatefulWidget {
   const SearchMoviePage({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class _SearchMoviePageState extends State<SearchMoviePage>
 
   @override
   void initState() {
-    super.initState();
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: kSearchDuration),
@@ -32,6 +32,8 @@ class _SearchMoviePageState extends State<SearchMoviePage>
         setState(() {});
       })
       ..forward();
+
+    super.initState();
   }
 
   @override
@@ -45,8 +47,8 @@ class _SearchMoviePageState extends State<SearchMoviePage>
   Widget build(BuildContext context) {
     final moviesProvider = Provider.of<MoviesProvider>(context);
     return Scaffold(
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
+      //extendBody: true,
+      //resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: Stack(
         children: [
@@ -56,11 +58,13 @@ class _SearchMoviePageState extends State<SearchMoviePage>
               top: (1 - animationController.value) * -150,
               child: CustomSearch(
                 onTapSearch: () {
-                  moviesProvider.searchMovies = [];
+                  Provider.of<MoviesProvider>(context, listen: false).query =
+                      textController.text;
                   moviesProvider.searchMovie();
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
                 onTapBack: () {
+                  moviesProvider.query = "";
                   FocusScope.of(context).requestFocus(FocusNode());
                   animationController.reverse();
                   Navigator.pop(context);
@@ -70,29 +74,36 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                 textController: textController,
               )),
           Positioned(
-              top: 150,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: FutureBuilder(
-                  future: moviesProvider.searchMovie(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Movie>> snapshot) {
-                    return ListView.builder(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 0),
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: moviesProvider.searchMoviesList.length,
-                        itemBuilder: (context, index) {
-                          var movie = moviesProvider.searchMoviesList[index];
-                          return SearchCard(movie: movie, type: 'movie');
-                        });
-                  }))
+            top: 150,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _FavoriteMoviesSearched(moviesProvider: moviesProvider),
+          )
         ],
       ),
     );
+  }
+}
+
+class _FavoriteMoviesSearched extends StatelessWidget {
+  const _FavoriteMoviesSearched({
+    required this.moviesProvider,
+  });
+
+  final MoviesProvider moviesProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        physics: const BouncingScrollPhysics(),
+        itemCount: moviesProvider.searchMoviesList.length,
+        itemBuilder: (_, i) {
+          var movie = moviesProvider.searchMoviesList[i];
+          return SearchCard(movie: movie, type: 'movie');
+        });
   }
 }
 
@@ -106,7 +117,9 @@ class SearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    bool isTablet = SizeScreen.isTablet(context);
+    double scale =
+        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
     return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -139,6 +152,7 @@ class SearchCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: PosterImage(
                     image: movie.getPosterImg(),
+                    scale: scale,
                   ),
                 ),
               ),
@@ -182,7 +196,7 @@ class SearchCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Release date: ${movie.releaseDate.substring(0, 7)}',
+                      movie.releaseDate,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),

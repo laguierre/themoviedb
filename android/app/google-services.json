@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "795746438495",
+    "project_id": "mypersonalmovies-7228c",
+    "storage_bucket": "mypersonalmovies-7228c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795746438495:android:79019824385ff4f576baea",
+        "android_client_info": {
+          "package_name": "com.example.themoviedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "795746438495-dli34jtgi7077t3s1vokvadjsfh18efg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARbIm2Q3USTpzsyUL5RUdhw-b3BImoo0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "795746438495-cttsd4ev1ns42jvkmejsu35mn50utk9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

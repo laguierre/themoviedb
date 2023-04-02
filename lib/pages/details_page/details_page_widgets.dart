@@ -3,9 +3,9 @@ import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
+import 'package:themoviedb/responsive.dart';
 
 import 'details_page.dart';
-
 
 class OverviewText extends StatelessWidget {
   const OverviewText({
@@ -71,6 +71,7 @@ class CastMovie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = SizeScreen.isTablet(context);
     return SizedBox(
         height: 200,
         child: PageView.builder(
@@ -78,8 +79,8 @@ class CastMovie extends StatelessWidget {
             padEnds: false,
             pageSnapping: false,
             controller: PageController(
-              initialPage: 1,
-              viewportFraction: 0.35,
+              initialPage: 0,
+              viewportFraction: isTablet ? 0.2 : 0.35,
             ),
             itemCount: performers.length,
             itemBuilder: (context, index) {
@@ -91,8 +92,13 @@ class CastMovie extends StatelessWidget {
                         height: 150.0,
                         width: 110,
                         fit: BoxFit.cover,
+                        imageErrorBuilder:(context, error, stackTrace) {
+                          return Image.asset('lib/assets/images/no-image.jpg',
+                              fit: BoxFit.fitWidth
+                          );
+                        },
                         placeholder:
-                        const AssetImage('lib/assets/images/no-image.jpg'),
+                            const AssetImage('lib/assets/images/no-image.jpg'),
                         image: NetworkImage(performers[index].getPhoto())),
                   ),
                   const SizedBox(height: 10),
@@ -121,19 +127,21 @@ class MovieDetailsInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = SizeScreen.isTablet(context);
+    double scale = isTablet? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
     return SizedBox(
-      height: size.height * 0.55,
+      height: size.height * scale,
       child: Row(
         children: [
           SizedBox(
-            width: size.width * 0.3,
+            width: isTablet ? size.width * 0.12 : size.width * 0.3,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 50),
                 const CustomBackButton(),
-                const Spacer(),
+                isTablet? const SizedBox(height: 50): const Spacer(),
                 RotatedBox(
                   quarterTurns: 3,
                   child: Text(
@@ -148,7 +156,7 @@ class MovieDetailsInfo extends StatelessWidget {
                   size: kDescriptionDetailsText + 6,
                   color: Colors.white,
                 ),
-                const Spacer(),
+                isTablet? const SizedBox(height: 50): const Spacer(),
                 RotatedBox(
                     quarterTurns: 3,
                     child: Text(
@@ -163,7 +171,8 @@ class MovieDetailsInfo extends StatelessWidget {
                   size: kDescriptionDetailsText + 8,
                   color: Colors.white,
                 ),
-                const Spacer(),
+                isTablet? const SizedBox(height: 50): const Spacer(),
+
                 RotatedBox(
                   quarterTurns: 3,
                   child: Text(
@@ -185,8 +194,13 @@ class MovieDetailsInfo extends StatelessWidget {
           Expanded(
               child: ClipRRect(
                   borderRadius:
-                  const BorderRadius.only(bottomLeft: Radius.circular(30)),
-                  child: PosterImage(image: movie.getPosterImg())))
+                      const BorderRadius.only(bottomLeft: Radius.circular(30)),
+                  child: PosterImage(
+                    image: movie.getPosterImg(),
+                    scale: isTablet
+                        ? kSizePosterCoefficientTablet
+                        : kSizePosterCoefficientPhone,
+                  )))
         ],
       ),
     );

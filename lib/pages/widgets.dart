@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:image_fade/image_fade.dart';
 import 'package:themoviedb/constants.dart';
-import 'package:themoviedb/providers/movie_provider.dart';
 
 class CustomSearch extends StatefulWidget {
   const CustomSearch({
@@ -23,14 +22,13 @@ class CustomSearch extends StatefulWidget {
 }
 
 class _CustomSearchState extends State<CustomSearch> {
+  late GlobalKey<FormFieldState<String>> formKey;
+
   @override
   void initState() {
-    widget.textController.addListener(() {
-      Provider
-          .of<MoviesProvider>(context, listen: false)
-          .query = widget.textController.text;
-    });
+    formKey = GlobalKey<FormFieldState<String>>();
     super.initState();
+    widget.textController.addListener(() {});
   }
 
   @override
@@ -62,13 +60,11 @@ class _CustomSearchState extends State<CustomSearch> {
                 onPressed: widget.onTapBack,
                 icon: const Icon(Icons.arrow_back_ios)),
           Expanded(
-            child: TextField(
-              onChanged: (text) {
-              },
+            child: TextFormField(
+              key: formKey,
               focusNode: widget.focusNode,
               controller: widget.textController,
               enabled: widget.enabled,
-              autofocus: widget.enabled,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 focusedBorder: InputBorder.none,
@@ -78,7 +74,7 @@ class _CustomSearchState extends State<CustomSearch> {
                 hintStyle: TextStyle(
                     color: Colors.grey, decoration: TextDecoration.none),
                 contentPadding:
-                EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 isDense: true,
               ),
               style: TextStyle(
@@ -102,23 +98,29 @@ class _CustomSearchState extends State<CustomSearch> {
 class PosterImage extends StatelessWidget {
   const PosterImage({
     Key? key,
-    required this.image,
-    this.scale = kSizePosterCoefficient,
+    this.image =
+        'https://cdn11.bigcommerce.com/s-auu4kfi2d9/stencil/59512910-bb6d-0136-46ec-71c445b85d45/e/933395a0-cb1b-0135-a812-525400970412/icons/icon-no-image.svg',
+    required this.scale,
   }) : super(key: key);
   final String image;
   final double scale;
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-        .of(context)
-        .size;
-    return FadeInImage(
-      fadeInDuration: const Duration(milliseconds: 150),
-      height: size.height * scale,
-      fit: BoxFit.cover,
-      placeholder: const AssetImage('lib/assets/images/no-image.jpg'),
+    var size = MediaQuery.of(context).size;
+    return ImageFade(
       image: NetworkImage(image),
+      duration: const Duration(milliseconds: 500),
+      syncDuration: const Duration(milliseconds: 150),
+      alignment: Alignment.center,
+      fit: BoxFit.cover,
+      placeholder:  Image.asset('lib/assets/images/no-image.jpg',
+          fit: BoxFit.fitWidth),
+      errorBuilder: (context, error) => Container(
+        color: const Color(0xFF6F6D6A),
+        alignment: Alignment.center,
+        child: const Icon(Icons.warning, color: Colors.black26, size: 128.0),
+      ),
     );
   }
 }
@@ -136,7 +138,6 @@ class CustomGIF extends StatelessWidget {
   }
 }
 
-
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
     Key? key,
@@ -148,7 +149,6 @@ class CustomBackButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF2D2C2C),
         borderRadius: BorderRadius.circular(15),
-        //shape: BoxShape.circle,
       ),
       child: IconButton(
         padding: const EdgeInsets.only(left: 10),
@@ -163,4 +163,3 @@ class CustomBackButton extends StatelessWidget {
     );
   }
 }
-

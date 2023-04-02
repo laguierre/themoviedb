@@ -41,9 +41,11 @@ dependencies:
   page_transition: ^2.0.9
   auto_size_text: ^3.0.0
   flutter_rating_bar: ^4.0.1
-  cloud_firestore: ^4.0.3
+  cloud_firestore: ^4.4.5
   font_awesome_flutter: ^10.2.1
   flutter_slidable: ^2.0.0
+  firebase_auth: ^4.3.0
+  image_fade: ^0.6.2
 
 dev_dependencies:
   flutter_test:

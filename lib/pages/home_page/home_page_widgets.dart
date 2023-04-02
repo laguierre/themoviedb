@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/details_page/details_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
 import 'package:themoviedb/providers/top_button_provider.dart';
+import 'package:themoviedb/responsive.dart';
 
 class MovieCard extends StatelessWidget {
-  const MovieCard({Key? key, required this.movie, required this.index, required this.type})
+  const MovieCard(
+      {Key? key, required this.movie, required this.index, required this.type})
       : super(key: key);
   final Movie movie;
   final int index;
@@ -16,6 +19,10 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double dg = SizeScreen.diagonal(context);
+    bool isTablet = SizeScreen.isTablet(context);
+    double scale = isTablet? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
+
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 220, 10.0, 0.0),
       decoration: BoxDecoration(
@@ -26,8 +33,8 @@ class MovieCard extends StatelessWidget {
               ),
               blurRadius: 30),
         ],
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(32),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(isTablet ? 48 : 32),
         ),
         color: Colors.white,
       ),
@@ -38,8 +45,8 @@ class MovieCard extends StatelessWidget {
             child: Column(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(16),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(isTablet ? 32 : 16),
                   ),
                   child: GestureDetector(
                       onTap: () {
@@ -50,18 +57,22 @@ class MovieCard extends StatelessWidget {
                                 child: DetailsPage(movie: movie, type: type),
                                 childCurrent: this));
                       },
-                      child: PosterImage(image: movie.getPosterImg())),
+                      child: AspectRatio(
+                          aspectRatio: isTablet ? 11 / 16 : 9 / 16,
+                          child: PosterImage(image: movie.getPosterImg(), scale: scale))),
                 ),
                 const Spacer(),
                 Text(
                   movie.title.toUpperCase(),
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 20.0,
+                  style: TextStyle(
+                    fontSize: 20.0 * dg * 0.0012,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 30)
+                isTablet
+                    ? const SizedBox(height: 45)
+                    : const SizedBox(height: 30),
               ],
             ),
           ),
@@ -69,8 +80,8 @@ class MovieCard extends StatelessWidget {
             alignment: const Alignment(0.88, 0.72),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              height: 100,
-              width: 58,
+              height: 100 * dg * 0.001,
+              width: 50 * dg * 0.0012,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -85,29 +96,31 @@ class MovieCard extends StatelessWidget {
                   end: Alignment.bottomLeft,
                   colors: [Color(0xFFF83A43), Color(0xB0F83A43)],
                 ),
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(isTablet? 40 : 30),
               ),
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(isTablet ? 14 : 8),
                     decoration: const BoxDecoration(
                         color: Color(0xFF323E4B), shape: BoxShape.circle),
-                    child: const Icon(
+                    child: Icon(
                       Icons.star,
                       color: Colors.white,
-                      size: 30,
+                      size: isTablet? 30 : 20,
                     ),
                   ),
                   const Spacer(),
                   Text(
                     movie.voteAverage.toString(),
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                        fontSize: 20 * dg * 0.001),
                   ),
-                  const SizedBox(height: 5),
+                  isTablet
+                      ? const SizedBox(height: 12)
+                      : const SizedBox(height: 5),
                 ],
               ),
             ),
@@ -121,9 +134,9 @@ class MovieCard extends StatelessWidget {
 class BackgroundImage extends StatelessWidget {
   const BackgroundImage(
       {Key? key,
-        required this.backgroundPageController,
-        required this.movies,
-        required this.pageValue})
+      required this.backgroundPageController,
+      required this.movies,
+      required this.pageValue})
       : super(key: key);
 
   final PageController backgroundPageController;
@@ -145,7 +158,7 @@ class BackgroundImage extends StatelessWidget {
                 return Opacity(
                   opacity: (1 - (index - pageValue).abs()).clamp(0, 1),
                   child: PosterImage(
-                    image: movies[index].getPosterImg().toString(),
+                    image: movies[index].getPosterImg(),
                     scale: 1,
                   ),
                 );
@@ -153,7 +166,6 @@ class BackgroundImage extends StatelessWidget {
     ]);
   }
 }
-
 
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
@@ -265,4 +277,3 @@ class BackgroundColor extends StatelessWidget {
     );
   }
 }
-
