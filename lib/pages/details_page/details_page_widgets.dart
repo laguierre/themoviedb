@@ -134,12 +134,12 @@ class MovieDetailsInfo extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: isTablet ? size.width * 0.12 : size.width * 0.3,
+            width: isTablet ? size.width * 0.12 : size.width * 0.23,
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
+                SizedBox(height: SizeScreen.diagonal(context) * 0.045),
                 const CustomBackButton(),
                 isTablet? const SizedBox(height: 50): const Spacer(),
                 RotatedBox(

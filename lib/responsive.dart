@@ -11,6 +11,6 @@ class SizeScreen {
   }
   static bool isTablet
     (BuildContext context){
-    return diagonal(context) > 900 ? true : false;
+    return diagonal(context) > 950 ? true : false;
   }
 }

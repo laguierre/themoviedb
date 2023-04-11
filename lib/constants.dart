@@ -5,7 +5,7 @@ const urlTheMovieDB = 'api.themoviedb.org';
 const apiKey = myApiKey;
 
 ///USE YOUR API KEY HERE
-const kSizePosterCoefficientPhone = 0.55;
+const kSizePosterCoefficientPhone = 0.50;
 const kSizePosterCoefficientTablet = 0.8;
 const kViewportFraction = 0.8;
 const kDescriptionDetailsText = 15.0;

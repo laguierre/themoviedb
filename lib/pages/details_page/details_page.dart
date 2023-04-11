@@ -56,32 +56,36 @@ class _DetailsPageState extends State<DetailsPage> {
                             final performers = snapshot.data;
                             return SingleChildScrollView(
                                 physics: const BouncingScrollPhysics(),
-                                child: Column(children: [
-                                  MovieDetailsInfo(
-                                      size: size,
-                                      moviesProvider: moviesProvider,
-                                      movie: widget.movie),
-                                  Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 30, 20, 20),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(widget.movie.title,
-                                                style: kTextStyleDetails),
-                                            const SizedBox(height: 15),
-                                            OverviewText(widget: widget),
-                                            const SizedBox(height: 20),
-                                            GenresListCard(
-                                                moviesProvider: moviesProvider),
-                                            const SizedBox(height: 20),
-                                            CastMovie(performers: performers!),
-                                            const SizedBox(height: 10),
-                                            PersonalRating(movie: widget.movie),
-                                          ]))
-                                ]));
+                                child: Column(
+                                    children: [
+                                      MovieDetailsInfo(
+                                          size: size,
+                                          moviesProvider: moviesProvider,
+                                          movie: widget.movie),
+                                      Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 30, 20, 20),
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(widget.movie.title,
+                                                    style: kTextStyleDetails),
+                                                const SizedBox(height: 15),
+                                                OverviewText(widget: widget),
+                                                const SizedBox(height: 20),
+                                                GenresListCard(
+                                                    moviesProvider:
+                                                        moviesProvider),
+                                                const SizedBox(height: 20),
+                                                CastMovie(
+                                                    performers: performers!),
+                                                const SizedBox(height: 10),
+                                                PersonalRating(
+                                                    movie: widget.movie),
+                                              ]))
+                                    ]));
                           } else {
                             return const CustomGIF();
                           }

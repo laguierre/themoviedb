@@ -21,10 +21,11 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double dg = SizeScreen.diagonal(context);
     bool isTablet = SizeScreen.isTablet(context);
-    double scale = isTablet? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
+    double scale =
+        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 220, 10.0, 0.0),
+      margin: EdgeInsets.fromLTRB(10, isTablet ? 220 : SizeScreen.diagonal(context) * 0.27, 10.0, 0.0),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -59,7 +60,8 @@ class MovieCard extends StatelessWidget {
                       },
                       child: AspectRatio(
                           aspectRatio: isTablet ? 11 / 16 : 9 / 16,
-                          child: PosterImage(image: movie.getPosterImg(), scale: scale))),
+                          child: PosterImage(
+                              image: movie.getPosterImg(), scale: scale))),
                 ),
                 const Spacer(),
                 Text(
@@ -77,7 +79,7 @@ class MovieCard extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const Alignment(0.88, 0.72),
+            alignment: Alignment(0.88, isTablet ? 0.765 : 0.72),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               height: 100 * dg * 0.001,
@@ -96,7 +98,7 @@ class MovieCard extends StatelessWidget {
                   end: Alignment.bottomLeft,
                   colors: [Color(0xFFF83A43), Color(0xB0F83A43)],
                 ),
-                borderRadius: BorderRadius.circular(isTablet? 40 : 30),
+                borderRadius: BorderRadius.circular(isTablet ? 40 : 30),
               ),
               child: Column(
                 children: [
@@ -107,7 +109,7 @@ class MovieCard extends StatelessWidget {
                     child: Icon(
                       Icons.star,
                       color: Colors.white,
-                      size: isTablet? 30 : 20,
+                      size: isTablet ? 40 : 20,
                     ),
                   ),
                   const Spacer(),
