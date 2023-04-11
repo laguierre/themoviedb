@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/api_key.dart';
@@ -105,6 +106,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               if (snapshot.hasData) {
                 final movies = snapshot.data;
                 return Stack(
+                  fit: StackFit.expand,
                   alignment: Alignment.topCenter,
                   children: [
                     BackgroundImage(
@@ -117,16 +119,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         movies: movies,
                         pageValue: pageValue),
                     Positioned(
-                        right: 20,
-                        left: 20,
-                        top: 40,
+                        right: 20.sp,
+                        left: 20.sp,
+                        top: 25.sp,
+                        height: 40.sp,
                         child: Row(
                           children: [
                             IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.video_collection_rounded,
                                   color: Colors.white,
-                                  size: 34,
+                                  size: 34.sp,
                                 ),
                                 onPressed: () {
                                   Navigator.push(
@@ -138,12 +141,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       .then(
                                           (_) => animationController.forward());
                                 }),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10.sp),
                             IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.search,
                                   color: Colors.white,
-                                  size: 34,
+                                  size: 34.sp,
                                 ),
                                 onPressed: () {
                                   moviesProvider.clearSearchList();
@@ -161,10 +164,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                     border: language == 'es-ES'
                                         ? Border.all(
-                                            color: Colors.white, width: 2)
+                                            color: Colors.white, width: 2.sp)
                                         : Border.all(
                                             color: Colors.transparent,
-                                            width: 2),
+                                            width: 2.sp),
                                     shape: BoxShape.circle),
                                 child: IconButton(
                                     onPressed: () {
@@ -180,10 +183,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                     border: language != 'es-ES'
                                         ? Border.all(
-                                            color: Colors.white, width: 2)
+                                            color: Colors.white, width: 2.sp)
                                         : Border.all(
                                             color: Colors.transparent,
-                                            width: 2),
+                                            width: 2.sp),
                                     shape: BoxShape.circle),
                                 child: IconButton(
                                     onPressed: () {
@@ -197,10 +200,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                         )),
                     Positioned(
-                        right: 20,
-                        left: 20,
-                        top: 120,
-                        height: 40,
+                        right: 20.sp,
+                        left: 20.sp,
+                        top: 85.sp,
+                        height: 40.sp,
                         child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
@@ -209,25 +212,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 .length,
                             itemBuilder: (context, i) {
                               return Padding(
-                                padding: const EdgeInsets.only(right: 10),
+                                padding: EdgeInsets.only(right: 10.sp),
                                 child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
                                         foregroundColor: Colors.black,
                                         side: number == i
-                                            ? const BorderSide(
-                                                width: 2, color: Colors.white)
-                                            : const BorderSide(
-                                                width: 2, color: Colors.white),
+                                            ? BorderSide(
+                                                width: 2.sp,
+                                                color: Colors.white)
+                                            : BorderSide(
+                                                width: 2.sp,
+                                                color: Colors.white),
                                         shadowColor: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(18.0),
+                                              BorderRadius.circular(18.0.sp),
                                         ),
                                         backgroundColor: number == i
                                             ? Colors.white
                                             : Colors.transparent,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25)),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 25.sp)),
                                     child: Text(
                                       Provider.of<MoviesProvider>(context,
                                               listen: false)
@@ -236,11 +241,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           color: number == i
                                               ? Colors.black
                                               : Colors.white,
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onPressed: () {
-                                      Provider.of<MoviesProvider>(context, listen: false).popularPage = 1;
+                                      Provider.of<MoviesProvider>(context,
+                                              listen: false)
+                                          .popularPage = 1;
                                       Provider.of<TopButtonModel>(context,
                                               listen: false)
                                           .number = i;

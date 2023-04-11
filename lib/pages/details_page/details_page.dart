@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/cast_model.dart';
@@ -29,6 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
     var size = MediaQuery.of(context).size;
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: true);
     return Scaffold(
+      extendBody: true,
         body: Container(
             height: double.infinity,
             decoration: const BoxDecoration(
@@ -55,33 +57,38 @@ class _DetailsPageState extends State<DetailsPage> {
                           if ((snapshot.hasData)) {
                             final performers = snapshot.data;
                             return SingleChildScrollView(
+                              padding: EdgeInsets.zero,
                                 physics: const BouncingScrollPhysics(),
-                                child: Column(children: [
-                                  MovieDetailsInfo(
-                                      size: size,
-                                      moviesProvider: moviesProvider,
-                                      movie: widget.movie),
-                                  Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 30, 20, 20),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(widget.movie.title,
-                                                style: kTextStyleDetails),
-                                            const SizedBox(height: 15),
-                                            OverviewText(widget: widget),
-                                            const SizedBox(height: 20),
-                                            GenresListCard(
-                                                moviesProvider: moviesProvider),
-                                            const SizedBox(height: 20),
-                                            CastMovie(performers: performers!),
-                                            const SizedBox(height: 10),
-                                            PersonalRating(movie: widget.movie),
-                                          ]))
-                                ]));
+                                child: Column(
+                                    children: [
+                                      MovieDetailsInfo(
+                                          size: size,
+                                          moviesProvider: moviesProvider,
+                                          movie: widget.movie),
+                                      Container(
+                                          width: double.infinity,
+                                          padding:  EdgeInsets.fromLTRB(
+                                              20.sp, 0.sp, 20.sp, 20.sp),
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(widget.movie.title,
+                                                    style: kTextStyleDetails),
+                                                SizedBox(height: 15.sp),
+                                                OverviewText(widget: widget),
+                                                SizedBox(height: 20.sp),
+                                                GenresListCard(
+                                                    moviesProvider:
+                                                        moviesProvider),
+                                                SizedBox(height: 20.sp),
+                                                CastMovie(
+                                                    performers: performers!),
+                                                SizedBox(height: 10.sp),
+                                                PersonalRating(
+                                                    movie: widget.movie),
+                                              ]))
+                                    ]));
                           } else {
                             return const CustomGIF();
                           }
@@ -122,17 +129,17 @@ class _PersonalRatingState extends State<PersonalRating> {
         language == 'es-ES'
             ? Text('Puntaje personal', style: kTextStyleDetails)
             : Text('Personal Rating', style: kTextStyleDetails),
-        const SizedBox(height: 20),
+        SizedBox(height: 20.sp),
         Container(
           alignment: Alignment.center,
           child: RatingBar.builder(
             unratedColor: kTextDetailsColor.withOpacity(0.3),
             glowColor: Colors.white,
-            itemSize: 50,
+            itemSize: 50.sp,
             initialRating: myRating,
             minRating: 1,
             direction: Axis.horizontal,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 5),
+            itemPadding: EdgeInsets.symmetric(horizontal: 5.sp),
             itemBuilder: (context, index) {
               return Text(emojis[index]);
             },
@@ -142,7 +149,7 @@ class _PersonalRatingState extends State<PersonalRating> {
             },
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20.sp),
         Row(
           children: [
             const Spacer(),
@@ -152,13 +159,13 @@ class _PersonalRatingState extends State<PersonalRating> {
                     width: 2,
                     color: kTextDetailsColor,
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: EdgeInsets.symmetric(horizontal: 30.sp),
                   foregroundColor: kTextDetailsColor,
                   backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(25.sp),
                   ),
-                  elevation: 15.0,
+                  elevation: 15.0.sp,
                 ),
                 onPressed: () {
                   double rating =
@@ -167,27 +174,27 @@ class _PersonalRatingState extends State<PersonalRating> {
                   saveOnFireBase(widget.movie, rating,
                       Provider.of<MoviesProvider>(context, listen: false).type);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      elevation: 10,
+                      elevation: 10.sp,
                       behavior: SnackBarBehavior.floating,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 15),
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 15),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 30.sp, vertical: 15.sp),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 30.sp, vertical: 15.sp),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.sp),
                       ),
                       content: Text(language == 'es-ES'
                           ? 'Pelicula guardada'
-                          : 'Movie saved')));
+                          : 'Movie saved', style: TextStyle(fontSize: 12.sp),)));
                   Navigator.pop(context);
                 },
                 child: Row(
                   children: [
                     const Icon(Icons.save_alt),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10.sp),
                     Text(
                       language == 'es-ES' ? 'Guardar' : 'Save',
-                      style: const TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 12.sp),
                     ),
                   ],
                 )),

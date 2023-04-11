@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/movie_model.dart';
@@ -19,12 +20,14 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double dg = SizeScreen.diagonal(context);
     bool isTablet = SizeScreen.isTablet(context);
-    double scale = isTablet? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
+    double scale =
+        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 220, 10.0, 0.0),
+      margin: EdgeInsets.fromLTRB(10.sp,
+          isTablet ? 150.sp : SizeScreen.diagonal(context) * 0.27, 10.0, 0.0),
+
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -34,19 +37,19 @@ class MovieCard extends StatelessWidget {
               blurRadius: 30),
         ],
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(isTablet ? 48 : 32),
+          top: Radius.circular(isTablet ? 32.sp : 32.sp),
         ),
         color: Colors.white,
       ),
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+            padding: EdgeInsets.fromLTRB(16.sp, 16.sp, 16.sp, 0),
             child: Column(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(isTablet ? 32 : 16),
+                    Radius.circular(isTablet ? 16.sp : 16.sp),
                   ),
                   child: GestureDetector(
                       onTap: () {
@@ -59,29 +62,29 @@ class MovieCard extends StatelessWidget {
                       },
                       child: AspectRatio(
                           aspectRatio: isTablet ? 11 / 16 : 9 / 16,
-                          child: PosterImage(image: movie.getPosterImg(), scale: scale))),
+                          child: PosterImage(
+                              image: movie.getPosterImg(), scale: scale))),
                 ),
                 const Spacer(),
                 Text(
                   movie.title.toUpperCase(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 20.0 * dg * 0.0012,
+                    //fontSize: 20.0 * dg * 0.0012,
+                    fontSize: 20.0.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                isTablet
-                    ? const SizedBox(height: 45)
-                    : const SizedBox(height: 30),
+                isTablet ? SizedBox(height: 30.sp) : SizedBox(height: 30.sp),
               ],
             ),
           ),
           Align(
-            alignment: const Alignment(0.88, 0.72),
+            alignment: Alignment(0.58.sp, isTablet ? 0.43.sp : 0.72),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              height: 100 * dg * 0.001,
-              width: 50 * dg * 0.0012,
+              width: 50.sp,
+              height: 90.sp,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -96,31 +99,30 @@ class MovieCard extends StatelessWidget {
                   end: Alignment.bottomLeft,
                   colors: [Color(0xFFF83A43), Color(0xB0F83A43)],
                 ),
-                borderRadius: BorderRadius.circular(isTablet? 40 : 30),
+                borderRadius: BorderRadius.circular(isTablet ? 30.sp : 30.sp),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(isTablet ? 14 : 8),
+                    padding: EdgeInsets.all(isTablet ? 6.sp : 8.sp),
                     decoration: const BoxDecoration(
                         color: Color(0xFF323E4B), shape: BoxShape.circle),
                     child: Icon(
                       Icons.star,
                       color: Colors.white,
-                      size: isTablet? 30 : 20,
+                      size: isTablet ? 30.sp : 20.sp,
                     ),
                   ),
                   const Spacer(),
                   Text(
-                    movie.voteAverage.toString(),
+                    movie.voteAverage.toStringAsFixed(1).toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20 * dg * 0.001),
+                        fontSize: 20.sp),
                   ),
-                  isTablet
-                      ? const SizedBox(height: 12)
-                      : const SizedBox(height: 5),
+                  isTablet ? SizedBox(height: 4.sp) : SizedBox(height: 5.sp),
                 ],
               ),
             ),
@@ -183,8 +185,8 @@ class CustomElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          side: const BorderSide(
-            width: 2,
+          side:  BorderSide(
+            width: 2.sp,
             color: Colors.white,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -193,14 +195,14 @@ class CustomElevatedButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
-          elevation: 15.0,
+          elevation: 15.0.sp,
         ),
         onPressed: onPressed,
         child: Row(
           children: [
             Text(
               language,
-              style: const TextStyle(fontSize: 16),
+              style:  TextStyle(fontSize: 16.sp),
             ),
           ],
         ));

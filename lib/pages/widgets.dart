@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_fade/image_fade.dart';
 import 'package:themoviedb/constants.dart';
 
@@ -107,7 +108,6 @@ class PosterImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return ImageFade(
       image: NetworkImage(image),
       duration: const Duration(milliseconds: 500),
@@ -134,7 +134,7 @@ class CustomGIF extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: SizedBox(
-            width: 80, child: Image.asset('lib/assets/images/loading.gif')));
+            width: 80.sp, child: Image.asset('lib/assets/images/loading.gif')));
   }
 }
 
@@ -148,10 +148,10 @@ class CustomBackButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF2D2C2C),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10.sp),
       ),
       child: IconButton(
-        padding: const EdgeInsets.only(left: 10),
+        padding:  EdgeInsets.only(left: 8.sp),
         icon: const Icon(
           Icons.arrow_back_ios,
           color: Colors.white,

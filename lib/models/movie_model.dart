@@ -36,7 +36,7 @@ class Movie {
         voteCount: json['vote_count'] ?? "N/A",
         id: json['id'] ?? 0,
         video: json['video'] ?? "N/A",
-        voteAverage: json['vote_average'] / 1,
+        voteAverage: (json['vote_average'] / 1),
         title: json['title'] ?? "N/A",
         popularity: json['popularity'] / 1,
         posterPath: json['poster_path'] ?? '',
