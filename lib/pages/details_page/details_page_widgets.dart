@@ -74,7 +74,8 @@ class CastMovie extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
     return SizedBox(
-        height: 110.sp,
+        height: 130.sp,
+        width: 300.sp,
         child: PageView.builder(
             physics: const BouncingScrollPhysics(),
             padEnds: false,

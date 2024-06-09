@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Positioned(
                         right: 20.sp,
                         left: 20.sp,
-                        top: 25.sp,
+                        top: 30.sp,
                         height: 40.sp,
                         child: Row(
                           children: [
@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Positioned(
                         right: 20.sp,
                         left: 20.sp,
-                        top: 85.sp,
+                        top: 100.sp,
                         height: 40.sp,
                         child: ListView.builder(
                             physics: const BouncingScrollPhysics(),

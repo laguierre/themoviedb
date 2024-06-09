@@ -26,7 +26,7 @@ class MovieCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.fromLTRB(10.sp,
-          isTablet ? 150.sp : SizeScreen.diagonal(context) * 0.27, 10.0, 0.0),
+          isTablet ? 150.sp : (SizeScreen.diagonal(context) * 0.19).sp, 10.0.sp, 0.0),
 
       decoration: BoxDecoration(
         boxShadow: [
@@ -80,7 +80,7 @@ class MovieCard extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: Alignment(0.58.sp, isTablet ? 0.43.sp : 0.72),
+            alignment: Alignment(isTablet ? 0.58.sp : 0.70.sp, isTablet ? 0.43.sp : 0.68),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               width: 50.sp,

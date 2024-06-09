@@ -68,7 +68,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       Container(
                                           width: double.infinity,
                                           padding:  EdgeInsets.fromLTRB(
-                                              20.sp, 0.sp, 20.sp, 20.sp),
+                                              20.sp, 20.sp, 20.sp, 20.sp),
                                           child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
