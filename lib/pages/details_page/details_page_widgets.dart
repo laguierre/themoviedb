@@ -133,7 +133,7 @@ class MovieDetailsInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
     double scale =
-        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
+        isTablet ? kSizePosterCoefficientTablet.sp : kSizePosterCoefficientPhone.sp;
     return SizedBox(
       height: size.height * scale,
       child: Row(
@@ -144,7 +144,7 @@ class MovieDetailsInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 15.sp),
+                SizedBox(height: 40.sp),
                 const CustomBackButton(),
                 isTablet ? SizedBox(height: 0.sp) : const Spacer(),
                 RotatedBox(
@@ -155,7 +155,7 @@ class MovieDetailsInfo extends StatelessWidget {
                         color: Colors.white, fontSize: kDescriptionDetailsText),
                   ),
                 ),
-                // SizedBox(height: 10.sp),
+                SizedBox(height: 8.sp),
                 Icon(
                   Icons.calendar_today_rounded,
                   size: kDescriptionDetailsText + 6,
@@ -170,7 +170,7 @@ class MovieDetailsInfo extends StatelessWidget {
                           color: Colors.white,
                           fontSize: kDescriptionDetailsText),
                     )),
-                //SizedBox(height: 10),
+                SizedBox(height: 8.sp),
                 Icon(
                   Icons.access_time,
                   size: kDescriptionDetailsText + 8,
@@ -185,13 +185,13 @@ class MovieDetailsInfo extends StatelessWidget {
                         color: Colors.white, fontSize: kDescriptionDetailsText),
                   ),
                 ),
-                //const SizedBox(height: 10),
+                SizedBox(height: 8.sp),
                 Icon(
                   Icons.star,
                   size: kDescriptionDetailsText + 10,
                   color: Colors.yellowAccent,
                 ),
-                SizedBox(height: 10.sp),
+                //SizedBox(height: 10.sp),
               ],
             ),
           ),

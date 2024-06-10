@@ -21,19 +21,18 @@ void deleteMovie(String id) => FirebaseFirestore.instance
 
 Future<void> authFirebase(String email, String pass) async {
   try {
-    final userCredential =
-    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
-    print("-----> Sign-in successful - $userCredential.");
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: pass,
+    );
+    print("Successfully signed in!");
   } on FirebaseAuthException catch (e) {
-    switch (e.code) {
-      case "invalid-custom-token":
-        print("-----> The supplied token is not a Firebase custom auth token.");
-        break;
-      case "custom-token-mismatch":
-        print("-----> The supplied token is for a different Firebase project.");
-        break;
-      default:
-        print("-----> Unkown error.");
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided.');
+    } else {
+      print('Error: ${e.message}');
     }
   }
 }
