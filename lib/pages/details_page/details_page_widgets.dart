@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:themoviedb/constants.dart';
@@ -39,7 +40,7 @@ class GenresListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 25.sp,
+      height: 30.sp,
       child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
@@ -49,7 +50,7 @@ class GenresListCard extends StatelessWidget {
             return Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(right: 10.sp),
-                padding: EdgeInsets.symmetric(horizontal: 20.sp),
+                padding: EdgeInsets.symmetric(horizontal: 15.sp),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12.sp)),
@@ -73,8 +74,9 @@ class CastMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
+    double sizeBoxHeight = 130.sp;
     return SizedBox(
-        height: 130.sp,
+        height: sizeBoxHeight,
         width: 300.sp,
         child: PageView.builder(
             physics: const BouncingScrollPhysics(),
@@ -90,19 +92,20 @@ class CastMovie extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0, 0, 8.sp, 0),
                 child: Column(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0.sp),
-                      child: FadeInImage(
-                          height: 86.0.sp,
-                          //width: 130.sp,
-                          fit: BoxFit.cover,
-                          imageErrorBuilder: (context, error, stackTrace) {
-                            return Image.asset('lib/assets/images/no-image.jpg',
-                                fit: BoxFit.fitWidth);
-                          },
-                          placeholder: const AssetImage(
-                              'lib/assets/images/no-image.jpg'),
-                          image: NetworkImage(performers[index].getPhoto())),
+                    Flexible(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0.sp),
+                        child: FadeInImage(
+                            height: sizeBoxHeight*0.9,
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset('lib/assets/images/no-image.jpg',
+                                  fit: BoxFit.fitWidth);
+                            },
+                            placeholder: const AssetImage(
+                                'lib/assets/images/no-image.jpg'),
+                            image: NetworkImage(performers[index].getPhoto())),
+                      ),
                     ),
                     SizedBox(height: 10.sp),
                     Text(

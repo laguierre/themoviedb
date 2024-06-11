@@ -84,7 +84,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 SizedBox(height: 20.sp),
                                                 CastMovie(
                                                     performers: performers!),
-                                                SizedBox(height: 10.sp),
+                                                SizedBox(height: 15.sp),
                                                 PersonalRating(
                                                     movie: widget.movie),
                                               ]))

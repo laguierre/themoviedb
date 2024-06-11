@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/constants.dart';
@@ -57,14 +58,14 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
       body: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+              padding: EdgeInsets.fromLTRB(10.sp, 50.sp, 10.sp, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       const CustomBackButton(),
-                      const SizedBox(width: 20),
+                      SizedBox(width: 15.sp),
                       Text(
                         language == 'es-ES'
                             ? 'Mis películas'
@@ -74,7 +75,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.sp),
                   if (language == 'es-ES')
                     QtyMovies(
                       qtyMovie: qtyMovie,
@@ -85,89 +86,88 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
 
                   ///Search
                   Container(
-                    alignment: Alignment.centerLeft,
-                    width: double.infinity,
-                    height: 50,
-                    margin: const EdgeInsets.fromLTRB(0, 25, 0, 5),
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(
-                                0, 3), // changes position of shadow
-                          ),
-                        ],
-                        border:
-                            Border.all(color: kSearchColorTextField, width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.8)),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Icon(Icons.search, color: kSearchColorTextField),
-                        Expanded(
-                          child: TextField(
-                            onChanged: (text) {
-                              moviesCollection = [];
-                              Provider.of<MyCollectionProvider>(context,
-                                      listen: false)
-                                  .movieCollection
-                                  .forEach((element) {
-                                if (element.title
-                                    .toLowerCase()
-                                    .contains(text.toLowerCase())) {
-                                  moviesCollection.add(element);
-                                }
-                              });
-                              setState(() {});
-                            },
-                            controller: textEditingController,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              border: InputBorder.none,
-                              hintText: "Search",
-                              hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.none),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 8),
-                              isDense: true,
+                      alignment: Alignment.centerLeft,
+                      width: double.infinity,
+                      height: 48.sp,
+                      margin: EdgeInsets.fromLTRB(0, 25.sp, 0, 5.sp),
+                      padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
                             ),
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              decoration: TextDecoration.none,
-                              color: kSearchColorTextField,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          color: kSearchColorTextField,
-                          padding: const EdgeInsets.all(0),
-                          icon: const Icon(Icons.close),
-                          onPressed: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            textEditingController.text = "";
-                            moviesCollection =
+                          ],
+                          border: Border.all(
+                              color: kSearchColorTextField, width: 2),
+                          borderRadius: BorderRadius.circular(18.sp),
+                          color: Colors.white.withOpacity(0.8)),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 10.sp),
+                          Icon(Icons.search, color: kSearchColorTextField),
+                          Expanded(
+                            child: TextField(
+                              onChanged: (text) {
+                                moviesCollection = [];
                                 Provider.of<MyCollectionProvider>(context,
                                         listen: false)
-                                    .movieCollection;
-                            setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-                  )
+                                    .movieCollection
+                                    .forEach((element) {
+                                  if (element.title
+                                      .toLowerCase()
+                                      .contains(text.toLowerCase())) {
+                                    moviesCollection.add(element);
+                                  }
+                                });
+                                setState(() {});
+                              },
+                              controller: textEditingController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                border: InputBorder.none,
+                                hintText: "Search",
+                                hintStyle: const TextStyle(
+                                    color: Colors.grey,
+                                    decoration: TextDecoration.none),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8.sp, horizontal: 8.sp),
+                                isDense: true,
+                              ),
+                              style: TextStyle(
+                                fontSize: 18.0.sp,
+                                decoration: TextDecoration.none,
+                                color: kSearchColorTextField,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            color: kSearchColorTextField,
+                            padding: const EdgeInsets.all(0),
+                            icon: const Icon(Icons.close),
+                            onPressed: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              textEditingController.text = "";
+                              moviesCollection =
+                                  Provider.of<MyCollectionProvider>(context,
+                                          listen: false)
+                                      .movieCollection;
+                              setState(() {});
+                            },
+                          )
+                        ],
+                      ))
                 ],
               )),
-          const SizedBox(height: 10),
+          SizedBox(height: 10.sp),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
+              padding:  EdgeInsets.only(right: 0.sp, left: 15.sp, top: 0.sp),
               physics: const BouncingScrollPhysics(),
               itemCount: moviesCollection.length,
               itemBuilder: (BuildContext context, int index) {

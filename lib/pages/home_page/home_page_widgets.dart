@@ -25,9 +25,10 @@ class MovieCard extends StatelessWidget {
         isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
 
     return Container(
+      /*margin: EdgeInsets.fromLTRB(10.sp,
+          isTablet ? 150.sp : (SizeScreen.diagonal(context) * 0.21).sp, 10.0.sp, 0.0),*/
       margin: EdgeInsets.fromLTRB(10.sp,
-          isTablet ? 150.sp : (SizeScreen.diagonal(context) * 0.19).sp, 10.0.sp, 0.0),
-
+          (SizeScreen.diagonal(context) * 0.21).sp, 10.0.sp, 0.0),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -44,7 +45,7 @@ class MovieCard extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(16.sp, 16.sp, 16.sp, 0),
+            padding: EdgeInsets.fromLTRB(16.sp, 18.sp, 16.sp, 0),
             child: Column(
               children: [
                 ClipRRect(
@@ -80,7 +81,7 @@ class MovieCard extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: Alignment(isTablet ? 0.58.sp : 0.70.sp, isTablet ? 0.43.sp : 0.68),
+            alignment: Alignment(isTablet ? 0.58.sp : 0.70.sp, isTablet ? 0.43.sp : 0.7),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               width: 50.sp,

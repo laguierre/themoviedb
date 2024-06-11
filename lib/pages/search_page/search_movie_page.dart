@@ -1,5 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/constants.dart';
@@ -72,9 +72,15 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                 enabled: true,
                 focusNode: focusNode,
                 textController: textController,
+                onFieldSubmitted: (String value) {
+                  Provider.of<MoviesProvider>(context, listen: false).query =
+                      value;
+                  moviesProvider.searchMovie();
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
               )),
           Positioned(
-            top: 150,
+            top: 130.sp,
             bottom: 0,
             left: 0,
             right: 0,
@@ -97,20 +103,24 @@ class _FavoriteMoviesSearched extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 0),
         physics: const BouncingScrollPhysics(),
         itemCount: moviesProvider.searchMoviesList.length,
         itemBuilder: (_, i) {
           var movie = moviesProvider.searchMoviesList[i];
+          //TODO acá hacer la búsqueda de las peliculas//
           return SearchCard(movie: movie, type: 'movie');
         });
   }
 }
 
 class SearchCard extends StatelessWidget {
-  const SearchCard(
-      {Key? key, required this.movie, this.myRating = -1, required this.type})
-      : super(key: key);
+  const SearchCard({
+    Key? key,
+    required this.movie,
+    this.myRating = -1,
+    required this.type,
+  }) : super(key: key);
   final Movie movie;
   final double myRating;
   final String type;
@@ -130,12 +140,12 @@ class SearchCard extends StatelessWidget {
                   childCurrent: this));
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: EdgeInsets.symmetric(vertical: 12.sp),
           child: Row(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.sp),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.white.withOpacity(0.3),
@@ -145,9 +155,9 @@ class SearchCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.all(3),
-                height: 150,
-                width: 100,
+                padding: EdgeInsets.all(3.sp),
+                height: 120.sp,
+                width: 80.sp,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: PosterImage(
@@ -156,49 +166,49 @@ class SearchCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 20),
+              SizedBox(width: 15.sp),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AutoSizeText(
+                    Text(
                       movie.title,
-                      minFontSize: 16,
-                      stepGranularity: 4,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: Colors.white,
-                          fontSize: 19,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
-                    AutoSizeText(
-                      minFontSize: 8,
-                      stepGranularity: 4,
+                    SizedBox(height: 8.sp),
+                    Text(
                       movie.originalTitle,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.sp),
                     Row(
                       children: [
-                        const Icon(Icons.star, color: Colors.yellowAccent),
-                        const SizedBox(width: 5),
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellowAccent,
+                          size: 16.sp,
+                        ),
+                        SizedBox(width: 5.sp),
                         Text(
                           movie.voteAverage.toStringAsFixed(1),
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.sp),
                         ),
-                        const SizedBox(width: 15),
+                        SizedBox(width: 15.sp),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.sp),
                     Text(
                       movie.releaseDate,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     ),
                   ],
                 ),
@@ -207,15 +217,15 @@ class SearchCard extends StatelessWidget {
                 children: [
                   if (myRating > 1)
                     Text(emojis[myRating.toInt() - 1],
-                        style: const TextStyle(fontSize: 35)),
-                  const SizedBox(height: 10),
+                        style: TextStyle(fontSize: 20.sp)),
+                  SizedBox(height: 5.sp),
                   if (type != '')
                     Text(type.toUpperCase(),
-                        style:
-                            TextStyle(color: kTextDetailsColor, fontSize: 15)),
+                        style: TextStyle(
+                            color: kTextDetailsColor, fontSize: 11.sp)),
                 ],
               ),
-              const SizedBox(width: 20)
+              SizedBox(width: 15.sp)
             ],
           ),
         ));

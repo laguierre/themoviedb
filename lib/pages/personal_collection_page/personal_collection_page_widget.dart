@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:themoviedb/constants.dart';
 
 
@@ -18,7 +19,7 @@ class QtyMovies extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: TextStyle(color: kTextDetailsColor, fontSize: 18),
+        style: TextStyle(color: kTextDetailsColor, fontSize: 18.sp),
         children: <TextSpan>[
           TextSpan(text: '📽  $movieLanguage: '),
           TextSpan(

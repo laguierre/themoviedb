@@ -39,7 +39,6 @@ dependencies:
   http:
   provider:
   page_transition:
-  auto_size_text:
   flutter_rating_bar:
   cloud_firestore:
   font_awesome_flutter:

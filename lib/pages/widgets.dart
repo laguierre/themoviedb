@@ -11,12 +11,16 @@ class CustomSearch extends StatefulWidget {
     required this.focusNode,
     required this.textController,
     required this.onTapSearch,
+    required this.onFieldSubmitted,
+
   }) : super(key: key);
   final bool enabled;
   final VoidCallback onTapBack;
   final VoidCallback onTapSearch;
   final FocusNode focusNode;
   final TextEditingController textController;
+  final ValueChanged<String> onFieldSubmitted; // Añadir el parámetro aquí
+
 
   @override
   State<CustomSearch> createState() => _CustomSearchState();
@@ -67,6 +71,7 @@ class _CustomSearchState extends State<CustomSearch> {
               controller: widget.textController,
               enabled: widget.enabled,
               keyboardType: TextInputType.text,
+              onFieldSubmitted: widget.onFieldSubmitted,
               decoration: const InputDecoration(
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -114,8 +119,8 @@ class PosterImage extends StatelessWidget {
       syncDuration: const Duration(milliseconds: 150),
       alignment: Alignment.center,
       fit: BoxFit.cover,
-      placeholder:  Image.asset('lib/assets/images/no-image.jpg',
-          fit: BoxFit.fitWidth),
+      placeholder:
+          Image.asset('lib/assets/images/no-image.jpg', fit: BoxFit.fitWidth),
       errorBuilder: (context, error) => Container(
         color: const Color(0xFF6F6D6A),
         alignment: Alignment.center,
@@ -151,7 +156,7 @@ class CustomBackButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.sp),
       ),
       child: IconButton(
-        padding:  EdgeInsets.only(left: 8.sp),
+        padding: EdgeInsets.only(left: 8.sp),
         icon: const Icon(
           Icons.arrow_back_ios,
           color: Colors.white,
