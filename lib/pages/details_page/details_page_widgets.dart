@@ -96,10 +96,11 @@ class CastMovie extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0.sp),
                         child: FadeInImage(
-                            height: sizeBoxHeight*0.9,
+                            height: sizeBoxHeight * 0.9,
                             fit: BoxFit.cover,
                             imageErrorBuilder: (context, error, stackTrace) {
-                              return Image.asset('lib/assets/images/no-image.jpg',
+                              return Image.asset(
+                                  'lib/assets/images/no-image.jpg',
                                   fit: BoxFit.fitWidth);
                             },
                             placeholder: const AssetImage(
@@ -135,21 +136,18 @@ class MovieDetailsInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
-    double scale =
-        isTablet ? kSizePosterCoefficientTablet.sp : kSizePosterCoefficientPhone.sp;
     return SizedBox(
-      height: size.height * scale,
+      height: SizeScreen.getHeight(context) * 0.7,
       child: Row(
         children: [
           SizedBox(
-            width: isTablet ? size.width * 0.12 : size.width * 0.23,
+            width: isTablet ? SizeScreen.getWidth(context) * 0.2 : SizeScreen.getWidth(context) * 0.23,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 40.sp),
+                SizedBox(height: 20.sp),
                 const CustomBackButton(),
-                isTablet ? SizedBox(height: 0.sp) : const Spacer(),
+                const Spacer(),
                 RotatedBox(
                   quarterTurns: 3,
                   child: Text(

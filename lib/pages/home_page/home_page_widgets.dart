@@ -21,21 +21,18 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
+    debugPrint("Es Tablet: $isTablet");
     double scale =
         isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
 
     return Container(
       /*margin: EdgeInsets.fromLTRB(10.sp,
           isTablet ? 150.sp : (SizeScreen.diagonal(context) * 0.21).sp, 10.0.sp, 0.0),*/
-      margin: EdgeInsets.fromLTRB(10.sp,
-          (SizeScreen.diagonal(context) * 0.21).sp, 10.0.sp, 0.0),
+      margin: EdgeInsets.fromLTRB(
+          10.sp, (SizeScreen.getHeight(context)*0.18).sp, 10.0.sp, 0.0),
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(
-                0.9,
-              ),
-              blurRadius: 30),
+          BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 30),
         ],
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(isTablet ? 32.sp : 32.sp),
@@ -71,17 +68,17 @@ class MovieCard extends StatelessWidget {
                   movie.title.toUpperCase(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    //fontSize: 20.0 * dg * 0.0012,
-                    fontSize: 20.0.sp,
+                    fontSize: 18.0.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                isTablet ? SizedBox(height: 30.sp) : SizedBox(height: 30.sp),
+                isTablet ? SizedBox(height: 30.sp) : SizedBox(height: 20.sp),
               ],
             ),
           ),
           Align(
-            alignment: Alignment(isTablet ? 0.58.sp : 0.70.sp, isTablet ? 0.43.sp : 0.7),
+            alignment: Alignment(
+                isTablet ? 0.58.sp : 0.70.sp, isTablet ? 0.43.sp : 0.7),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               width: 50.sp,
@@ -186,7 +183,7 @@ class CustomElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          side:  BorderSide(
+          side: BorderSide(
             width: 2.sp,
             color: Colors.white,
           ),
@@ -203,7 +200,7 @@ class CustomElevatedButton extends StatelessWidget {
           children: [
             Text(
               language,
-              style:  TextStyle(fontSize: 16.sp),
+              style: TextStyle(fontSize: 16.sp),
             ),
           ],
         ));
