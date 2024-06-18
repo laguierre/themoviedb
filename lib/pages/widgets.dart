@@ -12,7 +12,6 @@ class CustomSearch extends StatefulWidget {
     required this.textController,
     required this.onTapSearch,
     required this.onFieldSubmitted,
-
   }) : super(key: key);
   final bool enabled;
   final VoidCallback onTapBack;
@@ -20,7 +19,6 @@ class CustomSearch extends StatefulWidget {
   final FocusNode focusNode;
   final TextEditingController textController;
   final ValueChanged<String> onFieldSubmitted; // Añadir el parámetro aquí
-
 
   @override
   State<CustomSearch> createState() => _CustomSearchState();
@@ -106,10 +104,8 @@ class PosterImage extends StatelessWidget {
     Key? key,
     this.image =
         'https://cdn11.bigcommerce.com/s-auu4kfi2d9/stencil/59512910-bb6d-0136-46ec-71c445b85d45/e/933395a0-cb1b-0135-a812-525400970412/icons/icon-no-image.svg',
-    required this.scale,
   }) : super(key: key);
   final String image;
-  final double scale;
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +116,15 @@ class PosterImage extends StatelessWidget {
       alignment: Alignment.center,
       fit: BoxFit.cover,
       placeholder:
-          Image.asset('lib/assets/images/no-image.jpg', fit: BoxFit.fitWidth),
+          Image.asset('lib/assets/images/no-image.jpg', fit: BoxFit.fitHeight),
       errorBuilder: (context, error) => Container(
         color: const Color(0xFF6F6D6A),
         alignment: Alignment.center,
-        child: const Icon(Icons.warning, color: Colors.black26, size: 128.0),
+        child: const Icon(
+          Icons.warning,
+          color: Colors.black26,
+          size: 128.0,
+        ),
       ),
     );
   }
@@ -153,10 +153,10 @@ class CustomBackButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF2D2C2C),
-        borderRadius: BorderRadius.circular(10.sp),
+        borderRadius: BorderRadius.circular(5.sp),
       ),
       child: IconButton(
-        padding: EdgeInsets.only(left: 8.sp),
+        padding: EdgeInsets.only(left: 7.sp),
         icon: const Icon(
           Icons.arrow_back_ios,
           color: Colors.white,

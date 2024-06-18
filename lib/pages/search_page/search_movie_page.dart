@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/constants.dart';
+import 'package:themoviedb/models/movie_firebase_model.dart';
 import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/details_page/details_page.dart';
 import 'package:themoviedb/pages/widgets.dart';
+import 'package:themoviedb/providers/collection_provider.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
-import 'package:themoviedb/responsive.dart';
 
 class SearchMoviePage extends StatefulWidget {
   const SearchMoviePage({Key? key}) : super(key: key);
@@ -80,7 +81,7 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                 },
               )),
           Positioned(
-            top: 130.sp,
+            top: 100.sp,
             bottom: 0,
             left: 0,
             right: 0,
@@ -101,15 +102,24 @@ class _FavoriteMoviesSearched extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<MovieCollection> moviesCollection =
+        Provider.of<MyCollectionProvider>(context, listen: false)
+            .movieCollection;
+
     return ListView.builder(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 0),
         physics: const BouncingScrollPhysics(),
         itemCount: moviesProvider.searchMoviesList.length,
         itemBuilder: (_, i) {
+          double myRating = -1;
           var movie = moviesProvider.searchMoviesList[i];
-          //TODO acá hacer la búsqueda de las peliculas//
-          return SearchCard(movie: movie, type: 'movie');
+          bool wasSeen = moviesCollection.any((movieCollection) {
+            return movieCollection.id == movie.id;
+          });
+
+          wasSeen ? myRating = 10 : myRating = -1;
+          return SearchCard(movie: movie, type: 'movie', myRating: myRating);
         });
   }
 }
@@ -127,9 +137,6 @@ class SearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isTablet = SizeScreen.isTablet(context);
-    double scale =
-        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
     return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -140,94 +147,99 @@ class SearchCard extends StatelessWidget {
                   childCurrent: this));
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.sp),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.sp),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withOpacity(0.3),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 0), // changes position of shadow
+            padding: EdgeInsets.symmetric(vertical: 12.sp),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.sp),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.3),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset:
+                            const Offset(0, 0), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.all(3.sp),
+                  height: 120.sp,
+                  width: 80.sp,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: PosterImage(
+                      image: movie.getPosterImg(),
                     ),
-                  ],
-                ),
-                padding: EdgeInsets.all(3.sp),
-                height: 120.sp,
-                width: 80.sp,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: PosterImage(
-                    image: movie.getPosterImg(),
-                    scale: scale,
                   ),
                 ),
-              ),
-              SizedBox(width: 15.sp),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(width: 15.sp),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        movie.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8.sp),
+                      Text(
+                        movie.originalTitle,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      ),
+                      SizedBox(height: 8.sp),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.yellowAccent,
+                            size: 16.sp,
+                          ),
+                          SizedBox(width: 5.sp),
+                          Text(
+                            movie.voteAverage.toStringAsFixed(1),
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                          ),
+                          SizedBox(width: 15.sp),
+                        ],
+                      ),
+                      SizedBox(height: 8.sp),
+                      Text(
+                        movie.releaseDate,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
                   children: [
-                    Text(
-                      movie.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 8.sp),
-                    Text(
-                      movie.originalTitle,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                    ),
-                    SizedBox(height: 8.sp),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.yellowAccent,
-                          size: 16.sp,
-                        ),
-                        SizedBox(width: 5.sp),
-                        Text(
-                          movie.voteAverage.toStringAsFixed(1),
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.sp),
-                        ),
-                        SizedBox(width: 15.sp),
-                      ],
-                    ),
-                    SizedBox(height: 8.sp),
-                    Text(
-                      movie.releaseDate,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                    ),
+                    if (myRating > 1 && myRating != 10)
+                      Text(emojis[myRating.toInt() - 1],
+                          style: TextStyle(fontSize: 20.sp)),
+                    if (myRating == 10)
+                      Icon(
+                        Icons.remove_red_eye,
+                        color: Colors.yellow,
+                        size: 28.sp,
+                      ),
+                    SizedBox(height: 5.sp),
+                    if (type != '')
+                      Text(type.toUpperCase(),
+                          style: TextStyle(
+                              color: kTextDetailsColor, fontSize: 11.sp)),
                   ],
                 ),
-              ),
-              Column(
-                children: [
-                  if (myRating > 1)
-                    Text(emojis[myRating.toInt() - 1],
-                        style: TextStyle(fontSize: 20.sp)),
-                  SizedBox(height: 5.sp),
-                  if (type != '')
-                    Text(type.toUpperCase(),
-                        style: TextStyle(
-                            color: kTextDetailsColor, fontSize: 11.sp)),
-                ],
-              ),
-              SizedBox(width: 15.sp)
-            ],
-          ),
-        ));
+                SizedBox(width: 15.sp)
+              ],
+            )));
   }
 }

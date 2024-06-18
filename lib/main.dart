@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       ],
       child: ScreenUtilInit(
         minTextAdapt: true,
-        splitScreenMode: false,
+        splitScreenMode: true,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',

@@ -51,7 +51,16 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
         qtySeries++;
       }
     }
-
+    //TODO acomodar por acá
+    Map<String, List<MovieCollection>> groupedMovies = groupMoviesByYear(moviesCollection);
+    print(groupedMovies.length);
+// Imprimir las películas agrupadas por año
+    groupedMovies.forEach((year, movies) {
+      print('Year: $year');
+      for (var movie in movies) {
+        print('  - ${movie.title}');
+      }
+    });
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       extendBody: true,
@@ -83,7 +92,6 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                       movieLanguage:
                           language == 'es-ES' ? 'Películas' : 'Movies',
                     ),
-
                   ///Search
                   Container(
                       alignment: Alignment.centerLeft,
@@ -241,4 +249,22 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
       ),
     );
   }
+}
+
+Map<String, List<MovieCollection>> groupMoviesByYear(List<MovieCollection> moviesCollection) {
+  Map<String, List<MovieCollection>> moviesByYear = {};
+
+  for (var movie in moviesCollection) {
+    // Extrae el año de la fecha
+    String year = movie.date.substring(0, 4);
+
+    // Si el año no está en el mapa, inicializa una nueva lista para ese año
+    if (!moviesByYear.containsKey(year)) {
+      moviesByYear[year] = [];
+    }
+
+    // Añade la película a la lista del año correspondiente
+    moviesByYear[year]!.add(movie);
+  }
+  return moviesByYear;
 }
