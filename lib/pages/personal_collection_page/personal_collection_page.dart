@@ -53,6 +53,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
     }
     //TODO acomodar por acá
     Map<String, List<MovieCollection>> groupedMovies = groupMoviesByYear(moviesCollection);
+
     print(groupedMovies.length);
 // Imprimir las películas agrupadas por año
     groupedMovies.forEach((year, movies) {
@@ -92,12 +93,69 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                       movieLanguage:
                           language == 'es-ES' ? 'Películas' : 'Movies',
                     ),
+
+
+
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.fromLTRB(0.sp, 20.sp, 0, 25.sp),
+                    height: 30.sp,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: groupedMovies.keys.length,
+                      itemBuilder: (context, index) {
+                        String year = groupedMovies.keys.elementAt(index);
+                        return Padding(
+                          padding: EdgeInsets.only(right: 10.sp),
+                          child: Material(
+                            elevation: 5.0,  // Elevación para sombra
+                            borderRadius: BorderRadius.circular(18.0.sp),
+                            shadowColor: Colors.black.withOpacity(0.2), // Color de la sombra
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: const Color(0xFF2D2C2C),
+                                side: BorderSide(
+                                  width: 2.sp,
+                                  color: const Color(0xFF2D2C2C),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0.sp),
+                                ),
+                                backgroundColor: const Color(0xFF2D2C2C),
+                                padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                              ),
+                              child: Text(
+                                '$year (${groupedMovies[year]!.length})',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onPressed: () {
+                                // Acción a realizar cuando se presiona el botón
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+
+
+
+
+
                   ///Search
                   Container(
                       alignment: Alignment.centerLeft,
                       width: double.infinity,
                       height: 48.sp,
-                      margin: EdgeInsets.fromLTRB(0, 25.sp, 0, 5.sp),
+                      margin: EdgeInsets.fromLTRB(0, 0.sp, 0, 5.sp),
                       padding: EdgeInsets.symmetric(horizontal: 5.sp),
                       decoration: BoxDecoration(
                           boxShadow: [
