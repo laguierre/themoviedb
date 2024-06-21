@@ -45,15 +45,6 @@ class _CustomSearchState extends State<CustomSearch> {
       margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-          ],
-          border: Border.all(color: kSearchColorTextField, width: 2),
           borderRadius: BorderRadius.circular(20),
           color: Colors.white.withOpacity(0.8)),
       child: Row(

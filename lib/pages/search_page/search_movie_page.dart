@@ -80,7 +80,7 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                 },
               )),
           Positioned(
-            top: 130.sp,
+            top: 80.sp,
             bottom: 0,
             left: 0,
             right: 0,
@@ -159,7 +159,6 @@ class SearchCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: PosterImage(
                     image: movie.getPosterImg(),
-
                   ),
                 ),
               ),
