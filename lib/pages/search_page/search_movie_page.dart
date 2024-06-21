@@ -25,6 +25,7 @@ class _SearchMoviePageState extends State<SearchMoviePage>
 
   @override
   void initState() {
+    super.initState();
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: kSearchDuration),
@@ -33,13 +34,14 @@ class _SearchMoviePageState extends State<SearchMoviePage>
         setState(() {});
       })
       ..forward();
+    focusNode.requestFocus(FocusNode());
 
-    super.initState();
   }
 
   @override
   void dispose() {
     animationController.dispose();
+    textController.dispose();
     focusNode.dispose();
     super.dispose();
   }
@@ -48,38 +50,32 @@ class _SearchMoviePageState extends State<SearchMoviePage>
   Widget build(BuildContext context) {
     final moviesProvider = Provider.of<MoviesProvider>(context);
     return Scaffold(
-      //extendBody: true,
-      //resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: Stack(
         children: [
           Positioned(
-              left: 0,
-              right: 0,
-              top: (1 - animationController.value) * -150,
-              child: CustomSearch(
-                onTapSearch: () {
-                  Provider.of<MoviesProvider>(context, listen: false).query =
-                      textController.text;
-                  moviesProvider.searchMovie();
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                onTapBack: () {
-                  moviesProvider.query = "";
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  animationController.reverse();
-                  Navigator.pop(context);
-                },
-                enabled: true,
-                focusNode: focusNode,
-                textController: textController,
-                onFieldSubmitted: (String value) {
-                  Provider.of<MoviesProvider>(context, listen: false).query =
-                      value;
-                  moviesProvider.searchMovie();
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-              )),
+            left: 0,
+            right: 0,
+            top: (1 - animationController.value) * -150,
+            child: CustomSearch(
+              onTapSearch: () {
+                searchMovies(context, textController.text, moviesProvider);
+              },
+              onTapBack: () {
+                moviesProvider.query = "";
+                FocusScope.of(context).unfocus();
+                animationController.reverse();
+                Navigator.pop(context);
+              },
+              enabled: true,
+              focusNode: focusNode,
+              textController: textController,
+              onFieldSubmitted: (String value) {
+                searchMovies(context, value, moviesProvider);
+              },
+            ),
+          ),
           Positioned(
             top: 100.sp,
             bottom: 0,
@@ -91,7 +87,14 @@ class _SearchMoviePageState extends State<SearchMoviePage>
       ),
     );
   }
+
+  void searchMovies(BuildContext context, String value, MoviesProvider moviesProvider) {
+    Provider.of<MoviesProvider>(context, listen: false).query =
+        value;
+    moviesProvider.searchMovie();
+  }
 }
+
 
 class _FavoriteMoviesSearched extends StatelessWidget {
   const _FavoriteMoviesSearched({
@@ -159,7 +162,7 @@ class SearchCard extends StatelessWidget {
                         spreadRadius: 5,
                         blurRadius: 7,
                         offset:
-                            const Offset(0, 0), // changes position of shadow
+                        const Offset(0, 0), // changes position of shadow
                       ),
                     ],
                   ),
@@ -206,7 +209,7 @@ class SearchCard extends StatelessWidget {
                             movie.voteAverage.toStringAsFixed(1),
                             overflow: TextOverflow.ellipsis,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                            TextStyle(color: Colors.white, fontSize: 16.sp),
                           ),
                           SizedBox(width: 15.sp),
                         ],
@@ -241,5 +244,86 @@ class SearchCard extends StatelessWidget {
                 SizedBox(width: 15.sp)
               ],
             )));
+  }
+}
+
+class CustomSearch extends StatelessWidget {
+  const CustomSearch({
+    Key? key,
+    required this.enabled,
+    required this.onTapBack,
+    required this.focusNode,
+    required this.textController,
+    required this.onTapSearch,
+    required this.onFieldSubmitted,
+  }) : super(key: key);
+
+  final bool enabled;
+  final VoidCallback onTapBack;
+  final VoidCallback onTapSearch;
+  final FocusNode focusNode;
+  final TextEditingController textController;
+  final ValueChanged<String> onFieldSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      width: double.infinity,
+      height: 38.sp,
+      margin: EdgeInsets.fromLTRB(20.sp, 40.sp, 20.sp, 0),
+      padding: EdgeInsets.symmetric(horizontal: 20.sp),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.sp),
+        color: Colors.white.withOpacity(0.8),
+      ),
+      child: Row(
+        children: [
+          if (enabled)
+            IconButton(
+              color: Colors.black,
+              padding: const EdgeInsets.all(0),
+              onPressed: onTapBack,
+              icon: Icon(Icons.arrow_back_ios, size: 16.sp),
+            ),
+          Expanded(
+            child: TextFormField(
+              //focusNode: focusNode,
+              controller: textController,
+              enabled: enabled,
+              keyboardType: TextInputType.text,
+              //onFieldSubmitted: onFieldSubmitted,
+              decoration:  InputDecoration(
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                border: InputBorder.none,
+                hintText: "Search",
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                  decoration: TextDecoration.none,
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 6.sp, horizontal: 6.sp),
+                isDense: true,
+              ),
+              style: TextStyle(
+                fontSize: 16.0.sp,
+                decoration: TextDecoration.none,
+                color: Colors.black,
+              ),
+              // onTap: () {
+              //   // Solicitar el foco cuando se toque el campo de texto
+              //   focusNode.requestFocus();
+              // },
+            ),
+          ),
+          IconButton(
+            color: Colors.black,
+            padding: const EdgeInsets.all(0),
+            onPressed: onTapSearch,
+            icon: Icon(Icons.search, size: 24.sp),
+          ),
+        ],
+      ),
+    );
   }
 }

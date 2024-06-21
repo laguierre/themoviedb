@@ -13,12 +13,13 @@ class CustomSearch extends StatefulWidget {
     required this.onTapSearch,
     required this.onFieldSubmitted,
   }) : super(key: key);
+
   final bool enabled;
   final VoidCallback onTapBack;
   final VoidCallback onTapSearch;
   final FocusNode focusNode;
   final TextEditingController textController;
-  final ValueChanged<String> onFieldSubmitted; // Añadir el parámetro aquí
+  final ValueChanged<String> onFieldSubmitted;
 
   @override
   State<CustomSearch> createState() => _CustomSearchState();
@@ -32,36 +33,38 @@ class _CustomSearchState extends State<CustomSearch> {
     formKey = GlobalKey<FormFieldState<String>>();
     super.initState();
     widget.textController.addListener(() {});
+    // Solicita el foco al iniciar
+    if (widget.enabled) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.focusNode.requestFocus(FocusNode());
+
+      });
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       width: double.infinity,
-      height: 50,
-      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      height: 40.sp,
+      margin: EdgeInsets.fromLTRB(20.sp, 40.sp, 20.sp, 0),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-          ],
-          border: Border.all(color: kSearchColorTextField, width: 2),
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white.withOpacity(0.8)),
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white.withOpacity(0.8),
+      ),
       child: Row(
         children: [
           if (widget.enabled)
             IconButton(
-                color: kSearchColorTextField,
-                padding: const EdgeInsets.all(0),
-                onPressed: widget.onTapBack,
-                icon: const Icon(Icons.arrow_back_ios)),
+              color: Colors.black,
+              padding: const EdgeInsets.all(0),
+              onPressed: widget.onTapBack,
+              icon: Icon(Icons.arrow_back_ios, size: 16.sp),
+            ),
           Expanded(
             child: TextFormField(
               key: formKey,
@@ -70,61 +73,35 @@ class _CustomSearchState extends State<CustomSearch> {
               enabled: widget.enabled,
               keyboardType: TextInputType.text,
               onFieldSubmitted: widget.onFieldSubmitted,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 border: InputBorder.none,
                 hintText: "Search",
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                     color: Colors.grey, decoration: TextDecoration.none),
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    EdgeInsets.symmetric(vertical: 6.sp, horizontal: 6.sp),
                 isDense: true,
               ),
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 16.0.sp,
                 decoration: TextDecoration.none,
-                color: kSearchColorTextField,
+                color: Colors.black,
               ),
+              onTap: () {
+                widget.focusNode.requestFocus(FocusNode());
+
+              },
             ),
           ),
           IconButton(
-              color: kSearchColorTextField,
-              padding: const EdgeInsets.all(0),
-              onPressed: widget.onTapSearch,
-              icon: const Icon(Icons.search)),
+            color: Colors.black,
+            padding: const EdgeInsets.all(0),
+            onPressed: widget.onTapSearch,
+            icon: Icon(Icons.search, color: Colors.black, size: 24.sp),
+          ),
         ],
-      ),
-    );
-  }
-}
-
-class PosterImage extends StatelessWidget {
-  const PosterImage({
-    Key? key,
-    this.image =
-        'https://cdn11.bigcommerce.com/s-auu4kfi2d9/stencil/59512910-bb6d-0136-46ec-71c445b85d45/e/933395a0-cb1b-0135-a812-525400970412/icons/icon-no-image.svg',
-  }) : super(key: key);
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return ImageFade(
-      image: NetworkImage(image),
-      duration: const Duration(milliseconds: 500),
-      syncDuration: const Duration(milliseconds: 150),
-      alignment: Alignment.center,
-      fit: BoxFit.cover,
-      placeholder:
-          Image.asset('lib/assets/images/no-image.jpg', fit: BoxFit.fitHeight),
-      errorBuilder: (context, error) => Container(
-        color: const Color(0xFF6F6D6A),
-        alignment: Alignment.center,
-        child: const Icon(
-          Icons.warning,
-          color: Colors.black26,
-          size: 128.0,
-        ),
       ),
     );
   }
@@ -164,6 +141,37 @@ class CustomBackButton extends StatelessWidget {
         onPressed: () {
           Navigator.pop(context);
         },
+      ),
+    );
+  }
+}
+
+class PosterImage extends StatelessWidget {
+  const PosterImage({
+    Key? key,
+    this.image =
+        'https://cdn11.bigcommerce.com/s-auu4kfi2d9/stencil/59512910-bb6d-0136-46ec-71c445b85d45/e/933395a0-cb1b-0135-a812-525400970412/icons/icon-no-image.svg',
+  }) : super(key: key);
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageFade(
+      image: NetworkImage(image),
+      duration: const Duration(milliseconds: 500),
+      syncDuration: const Duration(milliseconds: 150),
+      alignment: Alignment.center,
+      fit: BoxFit.cover,
+      placeholder:
+          Image.asset('lib/assets/images/no-image.jpg', fit: BoxFit.fitHeight),
+      errorBuilder: (context, error) => Container(
+        color: const Color(0xFF6F6D6A),
+        alignment: Alignment.center,
+        child: const Icon(
+          Icons.warning,
+          color: Colors.black26,
+          size: 128.0,
+        ),
       ),
     );
   }

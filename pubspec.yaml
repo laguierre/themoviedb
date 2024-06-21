@@ -45,7 +45,7 @@ dependencies:
   flutter_slidable:
   firebase_auth:
   image_fade:
-  flutter_screenutil: ^5.9.3
+  flutter_screenutil:
 
 dev_dependencies:
   flutter_test:
