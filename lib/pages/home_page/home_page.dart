@@ -114,148 +114,157 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         pageValue: pageValue,
                         movies: movies!),
                     const BackgroundColor(),
-                    MovieListCards(
-                        pageController: pageController,
-                        movies: movies,
-                        pageValue: pageValue),
-                    Positioned(
-                        right: 20.sp,
-                        left: 20.sp,
-                        top: 30.sp,
-                        height: 40.sp,
-                        child: Row(
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.video_collection_rounded,
-                                  color: Colors.white,
-                                  size: 34.sp,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            type: PageTransitionType.fade,
-                                            child: const MyPersonalCollection(),
-                                          ))
-                                      .then(
-                                          (_) => animationController.forward());
-                                }),
-                            SizedBox(width: 10.sp),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 34.sp,
-                                ),
-                                onPressed: () {
-                                  moviesProvider.clearSearchList();
-                                  Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            type: PageTransitionType.fade,
-                                            child: const SearchMoviePage(),
-                                          ))
-                                      .then(
-                                          (_) => animationController.forward());
-                                }),
-                            const Spacer(),
-                            Container(
-                                decoration: BoxDecoration(
-                                    border: language == 'es-ES'
-                                        ? Border.all(
-                                            color: Colors.white, width: 2.sp)
-                                        : Border.all(
-                                            color: Colors.transparent,
-                                            width: 2.sp),
-                                    shape: BoxShape.circle),
-                                child: IconButton(
-                                    onPressed: () {
-                                      Provider.of<MoviesProvider>(context,
-                                              listen: false)
-                                          .language = 'es-ES';
-                                      refreshCards(number, moviesProvider);
-                                      animateToStart();
-                                    },
-                                    icon: Image.asset(
-                                        'lib/assets/images/esp.png'))),
-                            Container(
-                                decoration: BoxDecoration(
-                                    border: language != 'es-ES'
-                                        ? Border.all(
-                                            color: Colors.white, width: 2.sp)
-                                        : Border.all(
-                                            color: Colors.transparent,
-                                            width: 2.sp),
-                                    shape: BoxShape.circle),
-                                child: IconButton(
-                                    onPressed: () {
-                                      Provider.of<MoviesProvider>(context,
-                                              listen: false)
-                                          .language = 'en-EN';
-                                      refreshCards(number, moviesProvider);
-                                    },
-                                    icon: Image.asset(
-                                        'lib/assets/images/uk.png'))),
-                          ],
-                        )),
-                    Positioned(
-                        right: 20.sp,
-                        left: 20.sp,
-                        top: 100.sp,
-                        height: 40.sp,
-                        child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: Provider.of<MoviesProvider>(context)
-                                .btnNamesText
-                                .length,
-                            itemBuilder: (context, i) {
-                              return Padding(
-                                padding: EdgeInsets.only(right: 10.sp),
-                                child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                        foregroundColor: Colors.black,
-                                        side: number == i
-                                            ? BorderSide(
-                                                width: 2.sp,
-                                                color: Colors.white)
-                                            : BorderSide(
-                                                width: 2.sp,
-                                                color: Colors.white),
-                                        shadowColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0.sp),
-                                        ),
-                                        backgroundColor: number == i
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 25.sp)),
-                                    child: Text(
-                                      Provider.of<MoviesProvider>(context,
-                                              listen: false)
-                                          .btnNamesText[i],
-                                      style: TextStyle(
-                                          color: number == i
-                                              ? Colors.black
-                                              : Colors.white,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    onPressed: () {
-                                      Provider.of<MoviesProvider>(context,
-                                              listen: false)
-                                          .popularPage = 1;
-                                      Provider.of<TopButtonModel>(context,
-                                              listen: false)
-                                          .number = i;
-                                      refreshCards(i, moviesProvider);
-                                      animateToStart();
-                                    }),
-                              );
-                            }))
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(15.sp, 23.sp, 15.sp, 0),
+                          height: 25.sp,
+                          width: double.infinity,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.video_collection_rounded,
+                                    color: Colors.white,
+                                    size: 20.sp,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child:
+                                                  const MyPersonalCollection(),
+                                            ))
+                                        .then((_) =>
+                                            animationController.forward());
+                                  }),
+                              SizedBox(width: 10.sp),
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.search,
+                                    color: Colors.white,
+                                    size: 20.sp,
+                                  ),
+                                  onPressed: () {
+                                    moviesProvider.clearSearchList();
+                                    Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child: const SearchMoviePage(),
+                                            ))
+                                        .then((_) =>
+                                            animationController.forward());
+                                  }),
+                              const Spacer(),
+                              Container(
+                                  decoration: BoxDecoration(
+                                      border: language == 'es-ES'
+                                          ? Border.all(
+                                              color: Colors.white, width: 2.sp)
+                                          : Border.all(
+                                              color: Colors.transparent,
+                                              width: 2.sp),
+                                      shape: BoxShape.circle),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Provider.of<MoviesProvider>(context,
+                                                listen: false)
+                                            .language = 'es-ES';
+                                        refreshCards(number, moviesProvider);
+                                        animateToStart();
+                                      },
+                                      icon: Image.asset(
+                                          'lib/assets/images/esp.png'))),
+                              SizedBox(width: 5.sp),
+                              Container(
+                                  decoration: BoxDecoration(
+                                      border: language != 'es-ES'
+                                          ? Border.all(
+                                              color: Colors.white, width: 2.sp)
+                                          : Border.all(
+                                              color: Colors.transparent,
+                                              width: 2.sp),
+                                      shape: BoxShape.circle),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Provider.of<MoviesProvider>(context,
+                                                listen: false)
+                                            .language = 'en-EN';
+                                        refreshCards(number, moviesProvider);
+                                      },
+                                      icon: Image.asset(
+                                          'lib/assets/images/uk.png'))),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(15.sp, 10.sp, 15.sp, 0),
+                          height: 25.sp,
+                          child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: Provider.of<MoviesProvider>(context)
+                                  .btnNamesText
+                                  .length,
+                              itemBuilder: (context, i) {
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 10.sp),
+                                  child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                          foregroundColor: Colors.black,
+                                          side: number == i
+                                              ? BorderSide(
+                                                  width: 2.sp,
+                                                  color: Colors.white)
+                                              : BorderSide(
+                                                  width: 2.sp,
+                                                  color: Colors.white),
+                                          shadowColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0.sp),
+                                          ),
+                                          backgroundColor: number == i
+                                              ? Colors.white
+                                              : Colors.transparent,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.sp)),
+                                      child: Text(
+                                        Provider.of<MoviesProvider>(context,
+                                                listen: false)
+                                            .btnNamesText[i],
+                                        style: TextStyle(
+                                            color: number == i
+                                                ? Colors.black
+                                                : Colors.white,
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Provider.of<MoviesProvider>(context,
+                                                listen: false)
+                                            .popularPage = 1;
+                                        Provider.of<TopButtonModel>(context,
+                                                listen: false)
+                                            .number = i;
+                                        refreshCards(i, moviesProvider);
+                                        animateToStart();
+                                      }),
+                                );
+                              }),
+                        ),
+                        SizedBox(height: 50.sp),
+                        Expanded(
+                          child: MovieListCards(
+                              pageController: pageController,
+                              movies: movies,
+                              pageValue: pageValue),
+                        )
+                      ],
+                    ),
                   ],
                 );
               } else {

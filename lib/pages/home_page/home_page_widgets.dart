@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/details_page/details_page.dart';
 import 'package:page_transition/page_transition.dart';
@@ -14,118 +13,126 @@ class MovieCard extends StatelessWidget {
   const MovieCard(
       {Key? key, required this.movie, required this.index, required this.type})
       : super(key: key);
+
   final Movie movie;
   final int index;
   final String type;
 
   @override
   Widget build(BuildContext context) {
-    bool isTablet = SizeScreen.isTablet(context);
-    debugPrint("Es Tablet: $isTablet");
-    double scale =
-        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
 
-    return Container(
-      /*margin: EdgeInsets.fromLTRB(10.sp,
-          isTablet ? 150.sp : (SizeScreen.diagonal(context) * 0.21).sp, 10.0.sp, 0.0),*/
-      margin: EdgeInsets.fromLTRB(
-          10.sp, (SizeScreen.getHeight(context)*0.18).sp, 10.0.sp, 0.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.9), blurRadius: 30),
-        ],
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(isTablet ? 32.sp : 32.sp),
-        ),
-        color: Colors.white,
+    return ClipRRect(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(32.sp),
       ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(16.sp, 18.sp, 16.sp, 0),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(isTablet ? 16.sp : 16.sp),
-                  ),
-                  child: GestureDetector(
+      child: Container(
+        margin: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 0),
+        padding: EdgeInsets.fromLTRB(16.sp, 16.sp, 16.sp, 0.sp),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              blurRadius: 15,
+              spreadRadius: 1,
+              offset: const Offset(0, 5), // changes position of shadow
+            ),
+          ],
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(32.sp),
+          ),
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(16.sp),
+                    ),
+                    child: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: DetailsPage(movie: movie, type: type),
-                                childCurrent: this));
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: DetailsPage(movie: movie, type: type),
+                            childCurrent: this,
+                          ),
+                        );
                       },
-                      child: AspectRatio(
-                          aspectRatio: isTablet ? 11 / 16 : 9 / 16,
-                          child: PosterImage(
-                              image: movie.getPosterImg(), scale: scale))),
-                ),
-                const Spacer(),
-                Text(
-                  movie.title.toUpperCase(),
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 18.0.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                isTablet ? SizedBox(height: 30.sp) : SizedBox(height: 20.sp),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment(
-                isTablet ? 0.58.sp : 0.70.sp, isTablet ? 0.43.sp : 0.7),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              width: 50.sp,
-              height: 90.sp,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-                gradient: const LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Color(0xFFF83A43), Color(0xB0F83A43)],
-                ),
-                borderRadius: BorderRadius.circular(isTablet ? 30.sp : 30.sp),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(isTablet ? 6.sp : 8.sp),
-                    decoration: const BoxDecoration(
-                        color: Color(0xFF323E4B), shape: BoxShape.circle),
-                    child: Icon(
-                      Icons.star,
-                      color: Colors.white,
-                      size: isTablet ? 30.sp : 20.sp,
+                      child: PosterImage(image: movie.getPosterImg()),
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    movie.voteAverage.toStringAsFixed(1).toString(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp),
+                  Positioned(
+                    top: 10.sp,
+                    right: 10.sp,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 6.sp),
+                      width: 40.sp,
+                      height: 75.sp,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.8),
+                            spreadRadius: 10,
+                            blurRadius: 25,
+                            offset: const Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                        gradient: const LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Color(0xFFF83A43), Color(0xB0F83A43)],
+                        ),
+                        borderRadius: BorderRadius.circular(30.sp),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(6.sp),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF323E4B),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.star,
+                              color: Colors.white,
+                              size: 20.sp,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            movie.voteAverage.toStringAsFixed(1).toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  isTablet ? SizedBox(height: 4.sp) : SizedBox(height: 5.sp),
                 ],
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 20.sp),
+            Text(
+              movie.title.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 18.0.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20.sp)
+          ],
+        ),
       ),
     );
   }
@@ -134,9 +141,9 @@ class MovieCard extends StatelessWidget {
 class BackgroundImage extends StatelessWidget {
   const BackgroundImage(
       {Key? key,
-      required this.backgroundPageController,
-      required this.movies,
-      required this.pageValue})
+        required this.backgroundPageController,
+        required this.movies,
+        required this.pageValue})
       : super(key: key);
 
   final PageController backgroundPageController;
@@ -156,11 +163,10 @@ class BackgroundImage extends StatelessWidget {
               itemCount: movies.length,
               itemBuilder: (context, index) {
                 return Opacity(
-                  opacity: (1 - (index - pageValue).abs()).clamp(0, 1),
-                  child: PosterImage(
-                    image: movies[index].getPosterImg(),
-                    scale: 1,
-                  ),
+                    opacity: (1 - (index - pageValue).abs()).clamp(0, 1),
+                    child: PosterImage(
+                      image: movies[index].getPosterImg(),
+                    )
                 );
               }))
     ]);

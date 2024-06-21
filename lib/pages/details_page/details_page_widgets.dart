@@ -202,9 +202,7 @@ class MovieDetailsInfo extends StatelessWidget {
                       BorderRadius.only(bottomLeft: Radius.circular(20.sp)),
                   child: PosterImage(
                     image: movie.getPosterImg(),
-                    scale: isTablet
-                        ? kSizePosterCoefficientTablet
-                        : kSizePosterCoefficientPhone,
+
                   )))
         ],
       ),

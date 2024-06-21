@@ -106,10 +106,9 @@ class PosterImage extends StatelessWidget {
     Key? key,
     this.image =
         'https://cdn11.bigcommerce.com/s-auu4kfi2d9/stencil/59512910-bb6d-0136-46ec-71c445b85d45/e/933395a0-cb1b-0135-a812-525400970412/icons/icon-no-image.svg',
-    required this.scale,
   }) : super(key: key);
   final String image;
-  final double scale;
+
 
   @override
   Widget build(BuildContext context) {

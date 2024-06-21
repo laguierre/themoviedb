@@ -127,9 +127,6 @@ class SearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isTablet = SizeScreen.isTablet(context);
-    double scale =
-        isTablet ? kSizePosterCoefficientTablet : kSizePosterCoefficientPhone;
     return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -162,7 +159,7 @@ class SearchCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: PosterImage(
                     image: movie.getPosterImg(),
-                    scale: scale,
+
                   ),
                 ),
               ),
