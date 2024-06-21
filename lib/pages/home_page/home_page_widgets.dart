@@ -7,7 +7,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
 import 'package:themoviedb/providers/top_button_provider.dart';
-import 'package:themoviedb/responsive.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard(

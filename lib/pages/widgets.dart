@@ -68,7 +68,7 @@ class _CustomSearchState extends State<CustomSearch> {
                 enabledBorder: InputBorder.none,
                 border: InputBorder.none,
                 hintText: "Search",
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                     color: Colors.grey, decoration: TextDecoration.none),
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 6.sp, horizontal: 6.sp),

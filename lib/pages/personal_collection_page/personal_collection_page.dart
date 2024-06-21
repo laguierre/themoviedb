@@ -23,11 +23,14 @@ class MyPersonalCollection extends StatefulWidget {
 class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   TextEditingController textEditingController = TextEditingController();
   List<MovieCollection> moviesCollection = [];
+  List<MovieCollection> filteredCollection = [];
+  String selectedYear = 'Todas';
 
   @override
   void initState() {
     moviesCollection = Provider.of<MyCollectionProvider>(context, listen: false)
         .movieCollection;
+    filteredCollection = moviesCollection;
     textEditingController.text = "";
     super.initState();
   }
@@ -36,6 +39,19 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   void dispose() {
     textEditingController.dispose();
     super.dispose();
+  }
+
+  void filterMoviesByYear(String year) {
+    setState(() {
+      selectedYear = year;
+      if (year == 'Todas') {
+        filteredCollection = moviesCollection;
+      } else {
+        filteredCollection = moviesCollection
+            .where((movie) => movie.date.startsWith(year))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -52,13 +68,15 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
       }
     }
 
+    Map<String, List<MovieCollection>> groupedMovies = groupMoviesByYear(moviesCollection);
+
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       extendBody: true,
       body: Column(
         children: [
           Padding(
-              padding: EdgeInsets.fromLTRB(10.sp, 50.sp, 10.sp, 0),
+              padding: EdgeInsets.fromLTRB(10.sp, 40.sp, 10.sp, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -71,7 +89,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                             ? 'Mis películas'
                             : 'My Personal Collection',
                         style:
-                            TextStyle(color: kTextDetailsColor, fontSize: 24),
+                        TextStyle(color: kTextDetailsColor, fontSize: 24.sp),
                       )
                     ],
                   ),
@@ -81,49 +99,82 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                       qtyMovie: qtyMovie,
                       qtySeries: qtySeries,
                       movieLanguage:
-                          language == 'es-ES' ? 'Películas' : 'Movies',
+                      language == 'es-ES' ? 'Películas' : 'Movies',
                     ),
-
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.fromLTRB(0.sp, 20.sp, 0, 25.sp),
+                    height: 30.sp,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: groupedMovies.keys.length + 1, // +1 for 'Todas'
+                      itemBuilder: (context, index) {
+                        String year;
+                        bool isSelected;
+                        if (index == 0) {
+                          year = 'Todas';
+                          isSelected = selectedYear == 'Todas';
+                        } else {
+                          year = groupedMovies.keys.elementAt(index - 1);
+                          isSelected = selectedYear == year;
+                        }
+                        return Padding(
+                          padding: EdgeInsets.only(right: 10.sp),
+                          child: Material(
+                            elevation: 5.0,  // Elevación para sombra
+                            borderRadius: BorderRadius.circular(18.0.sp),
+                            shadowColor: Colors.black.withOpacity(0.2), // Color de la sombra
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: isSelected ? Color(0xFF2D2C2C) : Colors.white,
+                                side: BorderSide(
+                                  width: 2.sp,
+                                  color: const Color(0xFF2D2C2C),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0.sp),
+                                ),
+                                backgroundColor: isSelected ? Colors.white : Color(0xFF2D2C2C),
+                                padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                              ),
+                              child: Text(
+                                year == 'Todas' ? 'Todas' : '$year (${groupedMovies[year]!.length})',
+                                style: TextStyle(
+                                  color: isSelected ? Color(0xFF2D2C2C) : Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onPressed: () {
+                                filterMoviesByYear(year);
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   ///Search
                   Container(
                       alignment: Alignment.centerLeft,
                       width: double.infinity,
-                      height: 48.sp,
-                      margin: EdgeInsets.fromLTRB(0, 25.sp, 0, 5.sp),
+                      height: 38.sp,
+                      margin: EdgeInsets.fromLTRB(0, 0.sp, 0, 5.sp),
                       padding: EdgeInsets.symmetric(horizontal: 5.sp),
                       decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                          border: Border.all(
-                              color: kSearchColorTextField, width: 2),
-                          borderRadius: BorderRadius.circular(18.sp),
+                          borderRadius: BorderRadius.circular(10.sp),
                           color: Colors.white.withOpacity(0.8)),
                       child: Row(
                         children: [
                           SizedBox(width: 10.sp),
-                          Icon(Icons.search, color: kSearchColorTextField),
+                          Icon(Icons.search, color: kSearchColorTextField, size: 18.sp),
                           Expanded(
                             child: TextField(
                               onChanged: (text) {
-                                moviesCollection = [];
-                                Provider.of<MyCollectionProvider>(context,
-                                        listen: false)
-                                    .movieCollection
-                                    .forEach((element) {
-                                  if (element.title
-                                      .toLowerCase()
-                                      .contains(text.toLowerCase())) {
-                                    moviesCollection.add(element);
-                                  }
-                                });
-                                setState(() {});
+                                filterMoviesBySearch(text);
                               },
                               controller: textEditingController,
                               keyboardType: TextInputType.text,
@@ -140,7 +191,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                                 isDense: true,
                               ),
                               style: TextStyle(
-                                fontSize: 18.0.sp,
+                                fontSize: 16.0.sp,
                                 decoration: TextDecoration.none,
                                 color: kSearchColorTextField,
                               ),
@@ -149,15 +200,11 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                           IconButton(
                             color: kSearchColorTextField,
                             padding: const EdgeInsets.all(0),
-                            icon: const Icon(Icons.close),
+                            icon:  Icon(Icons.close, size: 20.sp),
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
                               textEditingController.text = "";
-                              moviesCollection =
-                                  Provider.of<MyCollectionProvider>(context,
-                                          listen: false)
-                                      .movieCollection;
-                              setState(() {});
+                              filterMoviesBySearch("");
                             },
                           )
                         ],
@@ -169,18 +216,18 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
             child: ListView.builder(
               padding:  EdgeInsets.only(right: 0.sp, left: 15.sp, top: 0.sp),
               physics: const BouncingScrollPhysics(),
-              itemCount: moviesCollection.length,
+              itemCount: filteredCollection.length,
               itemBuilder: (BuildContext context, int index) {
-                double myRating = moviesCollection[index].rating;
-                moviesProvider.searchMovieById(moviesCollection[index].id);
-                String type = moviesCollection[index].type;
+                double myRating = filteredCollection[index].rating;
+                moviesProvider.searchMovieById(filteredCollection[index].id);
+                String type = filteredCollection[index].type;
 
                 return FutureBuilder(
                   future: type == 'movie'
                       ? moviesProvider
-                          .searchMovieById(moviesCollection[index].id)
+                      .searchMovieById(filteredCollection[index].id)
                       : moviesProvider
-                          .searchTvShowById(moviesCollection[index].id),
+                      .searchTvShowById(filteredCollection[index].id),
                   builder: (BuildContext context,
                       AsyncSnapshot<MovieDetails> snapshot) {
                     var movie = snapshot.data;
@@ -215,12 +262,12 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                               onPressed: (context) {
                                 deleteMovie(movie.id.toString());
                                 Provider.of<MyCollectionProvider>(context,
-                                        listen: false)
+                                    listen: false)
                                     .movieCollection
                                     .removeAt(index);
                                 moviesCollection =
                                     Provider.of<MyCollectionProvider>(context,
-                                            listen: false)
+                                        listen: false)
                                         .movieCollection;
                                 setState(() {});
                               }),
@@ -240,5 +287,32 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
         ],
       ),
     );
+  }
+
+  Map<String, List<MovieCollection>> groupMoviesByYear(List<MovieCollection> moviesCollection) {
+    Map<String, List<MovieCollection>> moviesByYear = {};
+
+    for (var movie in moviesCollection) {
+      // Extrae el año de la fecha
+      String year = movie.date.substring(0, 4);
+
+      // Si el año no está en el mapa, inicializa una nueva lista para ese año
+      if (!moviesByYear.containsKey(year)) {
+        moviesByYear[year] = [];
+      }
+
+      // Añade la película a la lista del año correspondiente
+      moviesByYear[year]!.add(movie);
+    }
+    return moviesByYear;
+  }
+
+  void filterMoviesBySearch(String query) {
+    setState(() {
+      filteredCollection = moviesCollection
+          .where((movie) =>
+          movie.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 }
