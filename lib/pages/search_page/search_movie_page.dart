@@ -80,7 +80,7 @@ class _SearchMoviePageState extends State<SearchMoviePage>
                 },
               )),
           Positioned(
-            top: 80.sp,
+            top: 90.sp,
             bottom: 0,
             left: 0,
             right: 0,

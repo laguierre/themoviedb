@@ -41,11 +41,11 @@ class _CustomSearchState extends State<CustomSearch> {
     return Container(
       alignment: Alignment.centerLeft,
       width: double.infinity,
-      height: 50,
-      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      height: 38.sp,
+      margin: EdgeInsets.fromLTRB(20.sp, 38.sp, 20.sp, 0),
+      padding:  EdgeInsets.symmetric(horizontal: 10.sp),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10.sp),
           color: Colors.white.withOpacity(0.8)),
       child: Row(
         children: [
@@ -54,7 +54,7 @@ class _CustomSearchState extends State<CustomSearch> {
                 color: kSearchColorTextField,
                 padding: const EdgeInsets.all(0),
                 onPressed: widget.onTapBack,
-                icon: const Icon(Icons.arrow_back_ios)),
+                icon:  Icon(Icons.arrow_back_ios, size: 18.sp)),
           Expanded(
             child: TextFormField(
               key: formKey,
@@ -63,7 +63,7 @@ class _CustomSearchState extends State<CustomSearch> {
               enabled: widget.enabled,
               keyboardType: TextInputType.text,
               onFieldSubmitted: widget.onFieldSubmitted,
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 border: InputBorder.none,
@@ -71,11 +71,11 @@ class _CustomSearchState extends State<CustomSearch> {
                 hintStyle: TextStyle(
                     color: Colors.grey, decoration: TextDecoration.none),
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    EdgeInsets.symmetric(vertical: 6.sp, horizontal: 6.sp),
                 isDense: true,
               ),
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 16.sp,
                 decoration: TextDecoration.none,
                 color: kSearchColorTextField,
               ),
@@ -85,7 +85,7 @@ class _CustomSearchState extends State<CustomSearch> {
               color: kSearchColorTextField,
               padding: const EdgeInsets.all(0),
               onPressed: widget.onTapSearch,
-              icon: const Icon(Icons.search)),
+              icon:  Icon(Icons.search, size: 20.sp)),
         ],
       ),
     );
