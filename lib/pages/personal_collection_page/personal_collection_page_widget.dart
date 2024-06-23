@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class FilterButton extends StatelessWidget {
   const FilterButton({
     Key? key,
@@ -19,11 +20,12 @@ class FilterButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 12.sp),
+        alignment: Alignment.center,
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 12.sp),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : const Color(0xFF2D2C2C),
-          borderRadius: BorderRadius.circular(18.sp),
-          border: Border.all(color: const Color(0xFF2D2C2C), width: 2.sp),
+          borderRadius: BorderRadius.circular(10.sp),
         ),
         child: RichText(
           text: TextSpan(
@@ -31,17 +33,19 @@ class FilterButton extends StatelessWidget {
               TextSpan(
                 text: '$label: ',
                 style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
                   color: isSelected ? const Color(0xFF2D2C2C) : Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                 ),
               ),
               TextSpan(
                 text: '$count',
                 style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
                   color: isSelected ? const Color(0xFF2D2C2C) : Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                 ),
               ),
             ],
@@ -51,5 +55,3 @@ class FilterButton extends StatelessWidget {
     );
   }
 }
-
-

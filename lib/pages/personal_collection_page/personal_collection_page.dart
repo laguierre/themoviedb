@@ -30,25 +30,14 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   bool showSeries = false;
   int qtyMovie = 0;
   int qtySeries = 0;
-  int filteredQtyMovie = 0; // Nueva variable para el conteo filtrado
-  int filteredQtySeries = 0; // Nueva variable para el conteo filtrado
+  int filteredQtyMovie = 0;
+  int filteredQtySeries = 0;
   Map<String, List<MovieCollection>> groupedMovies = {};
   List<String> availableYears = [];
 
   @override
   void initState() {
     super.initState();
-    fetchMoviesCollection();
-  }
-
-  void filterMoviesByYear(String year) {
-    setState(() {
-      selectedYear = year;
-      filterMoviesByType();
-    });
-  }
-
-  Future<void> fetchMoviesCollection() async {
     try {
       final collectionProvider =
           Provider.of<MyCollectionProvider>(context, listen: false);
@@ -63,11 +52,17 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
       });
       updateCountsAndGroups(); // Actualiza contadores y agrupaciones al inicio
     } catch (e) {
-      // Manejo de errores
       setState(() {
         isLoading = false;
       });
     }
+  }
+
+  void filterMoviesByYear(String year) {
+    setState(() {
+      selectedYear = year;
+      filterMoviesByType();
+    });
   }
 
   void updateCountsAndGroups() {
@@ -113,11 +108,9 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
     for (var movie in moviesCollection) {
       if (movie.date.length >= 4) {
         String year = movie.date.substring(0, 4);
-
         if (!moviesByYear.containsKey(year)) {
           moviesByYear[year] = [];
         }
-
         moviesByYear[year]!.add(movie);
       }
     }
@@ -167,32 +160,36 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            FilterButton(
-                              label: language == 'es-ES'
-                                  ? '📽 Películas'
-                                  : '📽 Movies',
-                              count: qtyMovie,
-                              isSelected: showMovies,
-                              onTap: () {
-                                setState(() {
-                                  showMovies = true;
-                                  showSeries = false; // Desactiva series
-                                  filterMoviesByType();
-                                });
-                              },
+                            Flexible(
+                              child: FilterButton(
+                                label: language == 'es-ES'
+                                    ? '📽 Películas'
+                                    : '📽 Movies',
+                                count: qtyMovie,
+                                isSelected: showMovies,
+                                onTap: () {
+                                  setState(() {
+                                    showMovies = true;
+                                    showSeries = !showMovies;
+                                    filterMoviesByType();
+                                  });
+                                },
+                              ),
                             ),
-                            FilterButton(
+                            SizedBox(width: 10.sp),
+                            Flexible(
+                                child: FilterButton(
                               label: '📺 Series',
                               count: qtySeries,
                               isSelected: showSeries,
                               onTap: () {
                                 setState(() {
-                                  showMovies = false; // Desactiva películas
-                                  showSeries = true;
+                                  showMovies = false;
+                                  showSeries = !showMovies;
                                   filterMoviesByType();
                                 });
                               },
-                            ),
+                            )),
                           ],
                         ),
                         Container(
