@@ -34,6 +34,8 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   int filteredQtySeries = 0;
   Map<String, List<MovieCollection>> groupedMovies = {};
   List<String> availableYears = [];
+  Map<String, dynamic> moviesMap = {};
+  Map<String, dynamic> seriesMap = {};
 
   @override
   void initState() {
@@ -43,19 +45,58 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
           Provider.of<MyCollectionProvider>(context, listen: false);
       final collection = collectionProvider.movieCollection;
       setState(() {
-        moviesCollection = collection;
-        filteredCollection = collection;
+        filteredCollection = moviesCollection = collection;
         availableYears = getAvailableYears(collection);
+        //TODO
+        print(availableYears);
         qtyMovie = collection.where((movie) => movie.type == 'movie').length;
         qtySeries = collection.where((movie) => movie.type == 'tv').length;
         isLoading = false;
       });
-      updateCountsAndGroups(); // Actualiza contadores y agrupaciones al inicio
+      updateCountsAndGroups();
+      moviesMap = generateMoviesMap(filteredCollection);
+      seriesMap = generateSeriesMap(filteredCollection);
+      print(moviesMap);
+      print(seriesMap);
     } catch (e) {
       setState(() {
         isLoading = false;
       });
     }
+  }
+
+  Map<String, dynamic> generateMoviesMap(List<MovieCollection> collection) {
+    Map<String, dynamic> moviesMap = {
+      'total': 0,
+    };
+
+    collection.where((movie) => movie.type == 'movie').forEach((movie) {
+      String year = movie.date.substring(0, 4);
+      if (!moviesMap.containsKey(year)) {
+        moviesMap[year] = 0;
+      }
+      moviesMap['total']++;
+      moviesMap[year]++;
+    });
+
+    return moviesMap;
+  }
+
+  Map<String, dynamic> generateSeriesMap(List<MovieCollection> collection) {
+    Map<String, dynamic> seriesMap = {
+      'total': 0,
+    };
+
+    collection.where((series) => series.type == 'tv').forEach((series) {
+      String year = series.date.substring(0, 4);
+      if (!seriesMap.containsKey(year)) {
+        seriesMap[year] = 0;
+      }
+      seriesMap['total']++;
+      seriesMap[year]++;
+    });
+
+    return seriesMap;
   }
 
   void filterMoviesByYear(String year) {
@@ -97,7 +138,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
         return matchType && matchYear;
       }).toList();
 
-      updateCountsAndGroups(); // Actualiza contadores y agrupaciones al cambiar la selección
+      updateCountsAndGroups();
     });
   }
 
@@ -114,6 +155,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
         moviesByYear[year]!.add(movie);
       }
     }
+    //TODO
     return moviesByYear;
   }
 
@@ -193,73 +235,79 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                           ],
                         ),
                         Container(
-                          alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.fromLTRB(0.sp, 20.sp, 0, 25.sp),
-                          height: 30.sp,
-                          width: double.infinity,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: availableYears.length + 1,
-                            itemBuilder: (context, index) {
-                              String year;
-                              bool isSelected;
-                              if (index == 0) {
-                                year = 'Todas';
-                                isSelected = selectedYear == 'Todas';
-                              } else {
-                                year = availableYears[index - 1];
-                                isSelected = selectedYear == year;
-                              }
-                              return Padding(
-                                padding: EdgeInsets.only(right: 10.sp),
-                                child: Material(
-                                  elevation: 5.0,
-                                  borderRadius: BorderRadius.circular(18.0.sp),
-                                  shadowColor: Colors.black.withOpacity(0.2),
-                                  child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: isSelected
-                                          ? const Color(0xFF2D2C2C)
-                                          : Colors.white,
-                                      side: BorderSide(
-                                        width: 2.sp,
-                                        color: const Color(0xFF2D2C2C),
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0.sp),
-                                      ),
-                                      backgroundColor: isSelected
-                                          ? Colors.white
-                                          : const Color(0xFF2D2C2C),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 15.sp),
-                                    ),
-                                    child: Text(
-                                      year == 'Todas'
-                                          ? 'Todas'
-                                          : '$year (${groupedMovies[year]?.length ?? 0})',
-                                      style: TextStyle(
-                                        color: isSelected
-                                            ? const Color(0xFF2D2C2C)
-                                            : Colors.white,
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      filterMoviesByYear(year);
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                            alignment: Alignment.centerLeft,
+                            margin: EdgeInsets.fromLTRB(0.sp, 20.sp, 0, 25.sp),
+                            height: 30.sp,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: availableYears.length + 1,
+                              itemBuilder: (context, index) {
+                                String year;
+                                bool isSelected;
+                                int count;
 
-                        ///Search
+                                if (index == 0) {
+                                  year = 'Todas';
+                                  isSelected = selectedYear == 'Todas';
+                                  count = moviesCollection
+                                      .length; // Total de películas en la colección
+                                } else {
+                                  year = availableYears[index - 1];
+                                  isSelected = selectedYear == year;
+                                  if (showMovies) {
+                                    count = moviesMap[year] ??
+                                        0; // Cantidad de películas para el año seleccionado
+                                  } else {
+                                    count = seriesMap[year] ??
+                                        0; // Cantidad de series para el año seleccionado
+                                  }
+                                }
+
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 10.sp),
+                                  child: Material(
+                                    elevation: 5.0,
+                                    borderRadius:
+                                        BorderRadius.circular(18.0.sp),
+                                    shadowColor: Colors.black.withOpacity(0.2),
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: isSelected
+                                            ? kSearchColorButton
+                                            : Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0.sp),
+                                        ),
+                                        backgroundColor: isSelected
+                                            ? Colors.white
+                                            : kSearchColorButton,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15.sp),
+                                      ),
+                                      child: Text(
+                                        year == 'Todas'
+                                            ? 'Todas'
+                                            : '$year ($count)',
+                                        style: TextStyle(
+                                          color: isSelected
+                                              ? kSearchColorButton
+                                              : Colors.white,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        filterMoviesByYear(year);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            )),
                         Container(
                             alignment: Alignment.centerLeft,
                             width: double.infinity,
@@ -275,31 +323,29 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                                 Icon(Icons.search,
                                     color: kSearchColorTextField, size: 18.sp),
                                 Expanded(
-                                  child: TextField(
-                                    onChanged: (text) {
-                                      filterMoviesBySearch(text);
-                                    },
-                                    controller: textEditingController,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      border: InputBorder.none,
-                                      hintText: "Search",
-                                      hintStyle: const TextStyle(
-                                          color: Colors.grey,
-                                          decoration: TextDecoration.none),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 8.sp, horizontal: 8.sp),
-                                      isDense: true,
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 16.0.sp,
-                                      decoration: TextDecoration.none,
-                                      color: kSearchColorTextField,
-                                    ),
-                                  ),
-                                ),
+                                    child: TextField(
+                                        onChanged: (text) {
+                                          filterMoviesBySearch(text);
+                                        },
+                                        controller: textEditingController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          focusedBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          border: InputBorder.none,
+                                          hintText: "Search",
+                                          hintStyle: const TextStyle(
+                                              color: Colors.grey,
+                                              decoration: TextDecoration.none),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 8.sp, horizontal: 8.sp),
+                                          isDense: true,
+                                        ),
+                                        style: TextStyle(
+                                          fontSize: 16.0.sp,
+                                          decoration: TextDecoration.none,
+                                          color: kSearchColorTextField,
+                                        ))),
                                 IconButton(
                                   color: kSearchColorTextField,
                                   padding: const EdgeInsets.all(0),
@@ -317,54 +363,51 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                     )),
                 SizedBox(height: 10.sp),
                 Expanded(
-                  child: ListView.builder(
-                    padding:
-                        EdgeInsets.only(right: 0.sp, left: 15.sp, top: 0.sp),
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: filteredCollection.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      double myRating = filteredCollection[index].rating;
-                      moviesProvider
-                          .searchMovieById(filteredCollection[index].id);
-                      String type = filteredCollection[index].type;
+                    child: ListView.builder(
+                  padding: EdgeInsets.only(right: 0.sp, left: 15.sp, top: 0.sp),
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: filteredCollection.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    double myRating = filteredCollection[index].rating;
+                    moviesProvider
+                        .searchMovieById(filteredCollection[index].id);
+                    String type = filteredCollection[index].type;
 
-                      return FutureBuilder(
-                        future: type == 'movie'
-                            ? moviesProvider
-                                .searchMovieById(filteredCollection[index].id)
-                            : moviesProvider
-                                .searchTvShowById(filteredCollection[index].id),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<MovieDetails> snapshot) {
-                          var movie = snapshot.data;
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CustomGIF(); // Mostrando un GIF mientras se cargan los datos
-                          } else if (snapshot.hasError) {
-                            return Text(
-                                'Error: ${snapshot.error}'); // Manejo de errores
-                          } else if (!snapshot.hasData) {
-                            return const Text(
-                                'No data available'); // Manejo de falta de datos
-                          }
+                    return FutureBuilder(
+                      future: type == 'movie'
+                          ? moviesProvider
+                              .searchMovieById(filteredCollection[index].id)
+                          : moviesProvider
+                              .searchTvShowById(filteredCollection[index].id),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<MovieDetails> snapshot) {
+                        var movie = snapshot.data;
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CustomGIF();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData) {
+                          return const Text('No data available');
+                        }
 
-                          Movie movieCard = Movie(
-                              voteCount: movie!.voteCount ?? 0,
-                              id: movie.id ?? 0,
-                              video: movie.video ?? false,
-                              voteAverage: movie.voteAverage ?? 0,
-                              title: movie.title ?? '',
-                              popularity: movie.popularity ?? 0,
-                              posterPath: movie.posterPath ?? '',
-                              originalLanguage: movie.originalLanguage ?? '',
-                              originalTitle: snapshot.data!.originalTitle ?? '',
-                              genreIds: [],
-                              backdropPath: movie.backdropPath ?? '',
-                              adult: movie.adult ?? false,
-                              overview: movie.overview ?? '',
-                              releaseDate: movie.releaseDate ?? '');
+                        Movie movieCard = Movie(
+                            voteCount: movie!.voteCount ?? 0,
+                            id: movie.id ?? 0,
+                            video: movie.video ?? false,
+                            voteAverage: movie.voteAverage ?? 0,
+                            title: movie.title ?? '',
+                            popularity: movie.popularity ?? 0,
+                            posterPath: movie.posterPath ?? '',
+                            originalLanguage: movie.originalLanguage ?? '',
+                            originalTitle: snapshot.data!.originalTitle ?? '',
+                            genreIds: [],
+                            backdropPath: movie.backdropPath ?? '',
+                            adult: movie.adult ?? false,
+                            overview: movie.overview ?? '',
+                            releaseDate: movie.releaseDate ?? '');
 
-                          return Slidable(
+                        return Slidable(
                             endActionPane: ActionPane(
                               extentRatio: 0.30,
                               motion: const StretchMotion(),
@@ -395,13 +438,11 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                               movie: movieCard,
                               myRating: myRating,
                               type: type,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
+                            ));
+                      },
+                    );
+                  },
+                ))
               ],
             ),
     );
