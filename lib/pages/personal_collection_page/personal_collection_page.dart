@@ -56,8 +56,6 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
       updateCountsAndGroups();
       moviesMap = generateMoviesMap(filteredCollection);
       seriesMap = generateSeriesMap(filteredCollection);
-      print(moviesMap);
-      print(seriesMap);
     } catch (e) {
       setState(() {
         isLoading = false;
@@ -66,9 +64,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   }
 
   Map<String, dynamic> generateMoviesMap(List<MovieCollection> collection) {
-    Map<String, dynamic> moviesMap = {
-      'total': 0,
-    };
+    Map<String, dynamic> moviesMap = {'total': 0};
 
     collection.where((movie) => movie.type == 'movie').forEach((movie) {
       String year = movie.date.substring(0, 4);
@@ -83,9 +79,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   }
 
   Map<String, dynamic> generateSeriesMap(List<MovieCollection> collection) {
-    Map<String, dynamic> seriesMap = {
-      'total': 0,
-    };
+    Map<String, dynamic> seriesMap = {'total': 0};
 
     collection.where((series) => series.type == 'tv').forEach((series) {
       String year = series.date.substring(0, 4);
@@ -155,7 +149,6 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
         moviesByYear[year]!.add(movie);
       }
     }
-    //TODO
     return moviesByYear;
   }
 
@@ -165,6 +158,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
           .where((movie) =>
               movie.title.toLowerCase().contains(query.toLowerCase()))
           .toList();
+      updateCountsAndGroups();
     });
   }
 
@@ -252,17 +246,14 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                                 if (index == 0) {
                                   year = 'Todas';
                                   isSelected = selectedYear == 'Todas';
-                                  count = moviesCollection
-                                      .length; // Total de películas en la colección
+                                  count = moviesCollection.length;
                                 } else {
                                   year = availableYears[index - 1];
                                   isSelected = selectedYear == year;
                                   if (showMovies) {
-                                    count = moviesMap[year] ??
-                                        0; // Cantidad de películas para el año seleccionado
+                                    count = moviesMap[year] ?? 0;
                                   } else {
-                                    count = seriesMap[year] ??
-                                        0; // Cantidad de series para el año seleccionado
+                                    count = seriesMap[year] ?? 0;
                                   }
                                 }
 
@@ -303,8 +294,8 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                                       onPressed: () {
                                         filterMoviesByYear(year);
                                       },
-                                    ),
-                                  ),
+                                    )
+                                  )
                                 );
                               },
                             )),

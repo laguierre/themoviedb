@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/cast_model.dart';
 import 'package:themoviedb/models/details_movie_model.dart';

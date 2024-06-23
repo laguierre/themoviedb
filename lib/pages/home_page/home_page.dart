@@ -117,8 +117,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.sp, 23.sp, 15.sp, 0),
-                          height: 25.sp,
+                          margin: EdgeInsets.fromLTRB(15.sp, 40.sp, 15.sp, 0),
+                          height: 50.sp,
                           width: double.infinity,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   icon: Icon(
                                     Icons.video_collection_rounded,
                                     color: Colors.white,
-                                    size: 20.sp,
+                                    size: 35.sp,
                                   ),
                                   onPressed: () {
                                     Navigator.push(
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   icon: Icon(
                                     Icons.search,
                                     color: Colors.white,
-                                    size: 20.sp,
+                                    size: 35.sp,
                                   ),
                                   onPressed: () {
                                     moviesProvider.clearSearchList();
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       },
                                       icon: Image.asset(
                                           'lib/assets/images/esp.png'))),
-                              SizedBox(width: 5.sp),
+                              SizedBox(width: 8.sp),
                               Container(
                                   decoration: BoxDecoration(
                                       border: language != 'es-ES'
@@ -201,8 +201,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.sp, 10.sp, 15.sp, 0),
-                          height: 25.sp,
+                          margin: EdgeInsets.fromLTRB(15.sp, 35.sp, 15.sp, 10.sp),
+                          height: 35.sp,
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
@@ -211,48 +211,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   .length,
                               itemBuilder: (context, i) {
                                 return Padding(
-                                  padding: EdgeInsets.only(right: 10.sp),
+                                  padding: EdgeInsets.only(right: 20.sp),
                                   child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          foregroundColor: Colors.black,
-                                          side: number == i
-                                              ? BorderSide(
-                                                  width: 2.sp,
-                                                  color: Colors.white)
-                                              : BorderSide(
-                                                  width: 2.sp,
-                                                  color: Colors.white),
-                                          shadowColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0.sp),
-                                          ),
-                                          backgroundColor: number == i
-                                              ? Colors.white
-                                              : Colors.transparent,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.sp)),
-                                      child: Text(
-                                        Provider.of<MoviesProvider>(context,
-                                                listen: false)
-                                            .btnNamesText[i],
-                                        style: TextStyle(
-                                            color: number == i
-                                                ? Colors.black
-                                                : Colors.white,
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () {
-                                        Provider.of<MoviesProvider>(context,
-                                                listen: false)
-                                            .popularPage = 1;
-                                        Provider.of<TopButtonModel>(context,
-                                                listen: false)
-                                            .number = i;
-                                        refreshCards(i, moviesProvider);
-                                        animateToStart();
-                                      }),
+                                    style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.black,
+                                        side: number == i
+                                            ? BorderSide(
+                                            width: 2.sp,
+                                            color: Colors.white)
+                                            : BorderSide(
+                                            width: 2.sp,
+                                            color: Colors.white),
+                                        shadowColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.0.sp),
+                                        ),
+                                        backgroundColor: number == i
+                                            ? Colors.white
+                                            : Colors.transparent,
+                                        padding: EdgeInsets.symmetric(horizontal: 30.sp)),
+                                    child: Text(
+                                      Provider.of<MoviesProvider>(context, listen: false).btnNamesText[i],
+                                      style: TextStyle(
+                                          color: number == i ? Colors.black : Colors.white,
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {
+                                      Provider.of<MoviesProvider>(context, listen: false).popularPage = 1;
+                                      Provider.of<TopButtonModel>(context, listen: false).number = i;
+                                      refreshCards(i, moviesProvider);
+                                      animateToStart();
+                                    },
+                                  )
+                                  ,
                                 );
                               }),
                         ),

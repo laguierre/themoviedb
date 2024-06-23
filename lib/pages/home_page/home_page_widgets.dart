@@ -172,46 +172,6 @@ class BackgroundImage extends StatelessWidget {
   }
 }
 
-class CustomElevatedButton extends StatelessWidget {
-  const CustomElevatedButton({
-    Key? key,
-    required this.moviesProvider,
-    required this.language,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final MoviesProvider moviesProvider;
-  final String language;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          side: BorderSide(
-            width: 2.sp,
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          elevation: 15.0.sp,
-        ),
-        onPressed: onPressed,
-        child: Row(
-          children: [
-            Text(
-              language,
-              style: TextStyle(fontSize: 16.sp),
-            ),
-          ],
-        ));
-  }
-}
-
 class MovieListCards extends StatelessWidget {
   const MovieListCards({
     Key? key,

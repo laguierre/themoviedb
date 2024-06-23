@@ -48,8 +48,8 @@ class _SearchMoviePageState extends State<SearchMoviePage>
   Widget build(BuildContext context) {
     final moviesProvider = Provider.of<MoviesProvider>(context);
     return Scaffold(
-      //extendBody: true,
-      //resizeToAvoidBottomInset: false,
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: Stack(
         children: [
@@ -116,7 +116,6 @@ class _FavoriteMoviesSearched extends StatelessWidget {
           bool wasSeen = moviesCollection.any((movieCollection) {
             return movieCollection.id == movie.id;
           });
-
           wasSeen ? myRating = 10 : myRating = -1;
           return SearchCard(movie: movie, type: 'movie', myRating: myRating);
         });
