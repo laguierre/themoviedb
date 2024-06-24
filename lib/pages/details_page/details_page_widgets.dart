@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:themoviedb/constants.dart';
@@ -121,12 +122,10 @@ class CastMovie extends StatelessWidget {
 class MovieDetailsInfo extends StatelessWidget {
   const MovieDetailsInfo({
     Key? key,
-    required this.size,
     required this.moviesProvider,
     required this.movie,
   }) : super(key: key);
 
-  final Size size;
   final MoviesProvider moviesProvider;
   final Movie movie;
 
@@ -138,11 +137,14 @@ class MovieDetailsInfo extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: isTablet ? SizeScreen.getWidth(context) * 0.2 : SizeScreen.getWidth(context) * 0.23,
+            width: isTablet
+                ? SizeScreen.getWidth(context) * 0.2
+                : SizeScreen.getWidth(context) * 0.23,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 23.sp),
+                SizedBox(height: 23.h),
+                //TODO Hacerlo más reactivo
                 const CustomBackButton(),
                 const Spacer(),
                 RotatedBox(
@@ -150,16 +152,19 @@ class MovieDetailsInfo extends StatelessWidget {
                   child: Text(
                     moviesProvider.releaseDate.substring(0, 7),
                     style: TextStyle(
-                        color: Colors.white, fontSize: kDescriptionDetailsText),
+                        color: Colors.white, fontSize: 14.h),
                   ),
                 ),
-                SizedBox(height: 8.sp),
-                Icon(
-                  Icons.calendar_today_rounded,
-                  size: kDescriptionDetailsText + 6,
-                  color: Colors.white,
+                SizedBox(height: 8.h),
+                RotatedBox(
+                  quarterTurns: 3,
+                  child: Icon(
+                    Icons.calendar_today_rounded,
+                    size: 18.h,
+                    color: Colors.white,
+                  ),
                 ),
-                SizedBox(height: 20.sp),
+                SizedBox(height: 23.h),
                 RotatedBox(
                     quarterTurns: 3,
                     child: Text(
@@ -168,25 +173,25 @@ class MovieDetailsInfo extends StatelessWidget {
                           color: Colors.white,
                           fontSize: kDescriptionDetailsText),
                     )),
-                SizedBox(height: 8.sp),
+                SizedBox(height: 8.h),
                 Icon(
                   Icons.access_time,
-                  size: kDescriptionDetailsText + 8,
+                  size: 22.h,
                   color: Colors.white,
                 ),
-                isTablet ? SizedBox(height: 20.sp) : SizedBox(height: 50.sp),
+                isTablet ? SizedBox(height: 20.h) : SizedBox(height: 50.h),
                 RotatedBox(
                   quarterTurns: 3,
                   child: Text(
                     movie.voteAverage.toStringAsFixed(1),
                     style: TextStyle(
-                        color: Colors.white, fontSize: kDescriptionDetailsText),
+                        color: Colors.white, fontSize: 14.h),
                   ),
                 ),
-                SizedBox(height: 8.sp),
+                SizedBox(height: 8.h),
                 Icon(
                   Icons.star,
-                  size: kDescriptionDetailsText + 10,
+                  size: 22.h,
                   color: Colors.yellowAccent,
                 ),
                 //SizedBox(height: 10.sp),
@@ -199,7 +204,6 @@ class MovieDetailsInfo extends StatelessWidget {
                       BorderRadius.only(bottomLeft: Radius.circular(20.sp)),
                   child: PosterImage(
                     image: movie.getPosterImg(),
-
                   )))
         ],
       ),

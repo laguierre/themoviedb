@@ -21,11 +21,11 @@ class MovieCard extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(32.sp),
+        top: Radius.circular(32.w),
       ),
       child: Container(
-        margin: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 0),
-        padding: EdgeInsets.fromLTRB(16.sp, 16.sp, 16.sp, 0.sp),
+        margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0.sp),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -36,7 +36,7 @@ class MovieCard extends StatelessWidget {
             ),
           ],
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(32.sp),
+            top: Radius.circular(32.w),
           ),
           color: Colors.white,
         ),
@@ -49,7 +49,7 @@ class MovieCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(16.sp),
+                      Radius.circular(16.w),
                     ),
                     child: GestureDetector(
                       onTap: () {
@@ -66,11 +66,11 @@ class MovieCard extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 10.sp,
-                    right: 10.sp,
+                    top: 10.h,
+                    right: 10.w,
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 6.sp),
-                      width: 40.sp,
+                      width: 40.w,
                       height: 75.sp,
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -119,7 +119,7 @@ class MovieCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20.sp),
+            SizedBox(height: 12.h),
             Text(
               movie.title.toUpperCase(),
               overflow: TextOverflow.ellipsis,
@@ -128,7 +128,7 @@ class MovieCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20.sp)
+            SizedBox(height: 20.h)
           ],
         ),
       ),

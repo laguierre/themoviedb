@@ -117,8 +117,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.sp, 20.sp, 15.sp, 0),
-                          height: 45.sp,
+                          margin: EdgeInsets.fromLTRB(15.w, 20.h, 15.w, 0),
+                          height: 45.h,
                           width: double.infinity,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   icon: Icon(
                                     Icons.video_collection_rounded,
                                     color: Colors.white,
-                                    size: 35.sp,
+                                    size: 35.h,
                                   ),
                                   onPressed: () {
                                     Navigator.push(
@@ -140,12 +140,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         .then((_) =>
                                             animationController.forward());
                                   }),
-                              SizedBox(width: 10.sp),
+                              SizedBox(width: 10.h),
                               IconButton(
                                   icon: Icon(
                                     Icons.search,
                                     color: Colors.white,
-                                    size: 35.sp,
+                                    size: 35.h,
                                   ),
                                   onPressed: () {
                                     moviesProvider.clearSearchList();
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       },
                                       icon: Image.asset(
                                           'lib/assets/images/esp.png'))),
-                              SizedBox(width: 8.sp),
+                              SizedBox(width: 8.w),
                               Container(
                                   decoration: BoxDecoration(
                                       border: language != 'es-ES'
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.sp, 25.sp, 15.sp, 0.sp),
+                          margin: EdgeInsets.fromLTRB(15.w, 25.h, 15.w, 0.sp),
                           height: 35.sp,
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
@@ -211,7 +211,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   .length,
                               itemBuilder: (context, i) {
                                 return Padding(
-                                  padding: EdgeInsets.only(right: 20.sp),
+                                  padding: EdgeInsets.only(right: 20.w),
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
                                         foregroundColor: Colors.black,
@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 );
                               }),
                         ),
-                        SizedBox(height: 70.sp),
+                        SizedBox(height: 70.h),
                         Expanded(
                           child: MovieListCards(
                               pageController: pageController,

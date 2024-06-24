@@ -11,7 +11,6 @@ import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/collection_provider.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
-import 'package:themoviedb/responsive.dart';
 import 'details_page_widgets.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -71,21 +70,21 @@ class _DetailsPageState extends State<DetailsPage> {
                                   Container(
                                       width: double.infinity,
                                       padding: EdgeInsets.fromLTRB(
-                                          20.sp, 20.sp, 20.sp, 20.sp),
+                                          20.w, 20.h, 20.w, 20.h),
                                       child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(widget.movie.title,
                                                 style: kTextStyleDetails),
-                                            SizedBox(height: 15.sp),
+                                            SizedBox(height: 15.h),
                                             OverviewText(widget: widget),
-                                            SizedBox(height: 20.sp),
+                                            SizedBox(height: 20.h),
                                             GenresListCard(
                                                 moviesProvider: moviesProvider),
-                                            SizedBox(height: 20.sp),
+                                            SizedBox(height: 20.h),
                                             CastMovie(performers: performers!),
-                                            SizedBox(height: 15.sp),
+                                            SizedBox(height: 15.h),
                                             PersonalRating(movie: widget.movie),
                                           ])),
                                 ]));
