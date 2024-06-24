@@ -117,8 +117,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.sp, 40.sp, 15.sp, 0),
-                          height: 50.sp,
+                          margin: EdgeInsets.fromLTRB(15.sp, 20.sp, 15.sp, 0),
+                          height: 45.sp,
                           width: double.infinity,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.sp, 35.sp, 15.sp, 10.sp),
+                          margin: EdgeInsets.fromLTRB(15.sp, 25.sp, 15.sp, 0.sp),
                           height: 35.sp,
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 );
                               }),
                         ),
-                        SizedBox(height: 50.sp),
+                        SizedBox(height: 70.sp),
                         Expanded(
                           child: MovieListCards(
                               pageController: pageController,

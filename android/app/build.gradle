@@ -49,7 +49,7 @@ android {
     defaultConfig {
         applicationId "com.example.themoviedb"
         minSdkVersion 23
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -81,3 +81,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-base:17.6.0'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
 }
+apply plugin: 'com.google.gms.google-services'
+

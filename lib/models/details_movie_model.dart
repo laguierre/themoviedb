@@ -24,7 +24,8 @@ class MovieDetails {
   double? voteAverage;
   int? voteCount;
 
-  MovieDetails({ this.adult,
+  MovieDetails({
+    this.adult,
     this.backdropPath,
     this.budget,
     this.genres,
@@ -47,11 +48,12 @@ class MovieDetails {
     this.title,
     this.video,
     this.voteAverage,
-    this.voteCount});
+    this.voteCount,
+  });
 
   MovieDetails.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
-    backdropPath = json['backdrop_path'];
+    backdropPath = json['backdrop_path'] ?? json['poster_path'];
     //belongsToCollection = json['belongs_to_collection'];
     budget = json['budget'];
     if (json['genres'] != null) {
@@ -64,10 +66,10 @@ class MovieDetails {
     id = json['id'];
     imdbId = json['imdb_id'];
     originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
+    originalTitle = json['original_title'] ?? 'N/A';
     overview = json['overview'];
     popularity = json['popularity'];
-    posterPath = json['poster_path'];
+    posterPath = json['poster_path'] ?? json['backdrop_path'];
     if (json['production_companies'] != null) {
       productionCompanies = <ProductionCompanies>[];
       json['production_companies'].forEach((v) {
@@ -97,7 +99,7 @@ class MovieDetails {
     voteCount = json['vote_count'];
   }
 
-  String getMovieDuration(int value){
+  String getMovieDuration(int value) {
     final int hour = value ~/ 60;
     final int minutes = value % 60;
     return '${hour.toString().padLeft(2, "0")}h ${minutes.toString().padLeft(2, "0")}min';

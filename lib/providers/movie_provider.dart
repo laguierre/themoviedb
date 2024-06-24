@@ -15,7 +15,8 @@ class MoviesProvider extends ChangeNotifier {
   String _type = 'movie';
 
   String get type => _type;
-  set type(String type){
+
+  set type(String type) {
     _type = type;
     notifyListeners();
   }
@@ -154,16 +155,17 @@ class MoviesProvider extends ChangeNotifier {
             backdropPath: "",
             adult: false,
             overview: "",
-            releaseDate: "");
+            releaseDate: "",
+            mediaType: "");
 
-        buffer.backdropPath = _tvShow[i].backdropPath?? '';
+        buffer.backdropPath = _tvShow[i].backdropPath ?? '';
         buffer.id = _tvShow[i].id!;
         buffer.title = _tvShow[i].originalName!;
         buffer.originalTitle = _tvShow[i].originalName!;
         buffer.originalLanguage = _tvShow[i].originalLanguage!;
         buffer.overview = _tvShow[i].overview!;
         buffer.voteAverage = _tvShow[i].voteAverage!;
-        buffer.posterPath = _tvShow[i].posterPath?? '';
+        buffer.posterPath = _tvShow[i].posterPath ?? '';
         buffer.voteCount = _tvShow[i].voteCount!;
         buffer.popularity = _tvShow[i].popularity!;
         buffer.genreIds = _tvShow[i].genreIds!;
@@ -230,7 +232,8 @@ class MoviesProvider extends ChangeNotifier {
             backdropPath: "",
             adult: false,
             overview: "",
-            releaseDate: "");
+            releaseDate: "",
+            mediaType: "");
 
         buffer.backdropPath = _tvShow[i].backdropPath!;
         buffer.id = _tvShow[i].id!;
@@ -301,20 +304,22 @@ class MoviesProvider extends ChangeNotifier {
       _movies = [];
       for (int i = 0; i < _tvShow.length; i++) {
         Movie buffer = Movie(
-            voteCount: 0,
-            id: 0,
-            video: false,
-            voteAverage: 0.0,
-            title: "",
-            popularity: 0.0,
-            posterPath: "",
-            originalLanguage: "",
-            originalTitle: "",
-            genreIds: [],
-            backdropPath: "",
-            adult: false,
-            overview: "",
-            releaseDate: "");
+          voteCount: 0,
+          id: 0,
+          video: false,
+          voteAverage: 0.0,
+          title: "",
+          popularity: 0.0,
+          posterPath: "",
+          originalLanguage: "",
+          originalTitle: "",
+          genreIds: [],
+          backdropPath: "",
+          adult: false,
+          overview: "",
+          releaseDate: "",
+          mediaType: "",
+        );
 
         buffer.backdropPath = _tvShow[i].backdropPath!;
         buffer.id = _tvShow[i].id!;
@@ -338,12 +343,14 @@ class PageViewProvider extends ChangeNotifier {
   double _pageValue = 0.0;
 
   int get pageIndex => _pageIndex;
+
   set pageIndex(int pageIndex) {
     _pageIndex = pageIndex;
     notifyListeners();
   }
 
   double get pageValue => _pageValue;
+
   set pageValue(double pageValue) {
     _pageValue = pageValue;
     notifyListeners();

@@ -26,7 +26,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
   List<MovieCollection> filteredCollection = [];
   String selectedYear = 'Todas';
   bool isLoading = true;
-  bool showMovies = true;
+  bool showMovies = false;
   bool showSeries = false;
   int qtyMovie = 0;
   int qtySeries = 0;
@@ -47,8 +47,6 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
       setState(() {
         filteredCollection = moviesCollection = collection;
         availableYears = getAvailableYears(collection);
-        //TODO
-        print(availableYears);
         qtyMovie = collection.where((movie) => movie.type == 'movie').length;
         qtySeries = collection.where((movie) => movie.type == 'tv').length;
         isLoading = false;
@@ -175,7 +173,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
           : Column(
               children: [
                 Padding(
-                    padding: EdgeInsets.fromLTRB(10.sp, 40.sp, 10.sp, 0),
+                    padding: EdgeInsets.fromLTRB(10.sp, 30.sp, 10.sp, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -198,9 +196,10 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                           children: [
                             Flexible(
                               child: FilterButton(
+                                isMovie: true,
                                 label: language == 'es-ES'
-                                    ? '📽 Películas'
-                                    : '📽 Movies',
+                                    ? 'Películas'
+                                    : 'Movies',
                                 count: qtyMovie,
                                 isSelected: showMovies,
                                 onTap: () {
@@ -215,7 +214,8 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                             SizedBox(width: 10.sp),
                             Flexible(
                                 child: FilterButton(
-                              label: '📺 Series',
+                                  isMovie: false,
+                              label: 'Series',
                               count: qtySeries,
                               isSelected: showSeries,
                               onTap: () {
@@ -278,6 +278,7 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                                             : kSearchColorButton,
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 15.sp),
+                                        side: BorderSide.none,
                                       ),
                                       child: Text(
                                         year == 'Todas'
@@ -285,10 +286,10 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                                             : '$year ($count)',
                                         style: TextStyle(
                                           color: isSelected
-                                              ? kSearchColorButton
+                                              ? Colors.black
                                               : Colors.white,
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.normal,
                                         ),
                                       ),
                                       onPressed: () {
@@ -396,7 +397,8 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                             backdropPath: movie.backdropPath ?? '',
                             adult: movie.adult ?? false,
                             overview: movie.overview ?? '',
-                            releaseDate: movie.releaseDate ?? '');
+                            releaseDate: movie.releaseDate ?? '',
+                        mediaType: type);
 
                         return Slidable(
                             endActionPane: ActionPane(

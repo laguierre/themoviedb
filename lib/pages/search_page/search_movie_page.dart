@@ -117,7 +117,8 @@ class _FavoriteMoviesSearched extends StatelessWidget {
             return movieCollection.id == movie.id;
           });
           wasSeen ? myRating = 10 : myRating = -1;
-          return SearchCard(movie: movie, type: 'movie', myRating: myRating);
+          return SearchCard(
+              movie: movie, type: movie.mediaType, myRating: myRating);
         });
   }
 }
@@ -154,7 +155,7 @@ class SearchCard extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.white.withOpacity(0.3),
-                        spreadRadius: 5,
+                        spreadRadius: 1,
                         blurRadius: 7,
                         offset:
                             const Offset(0, 0), // changes position of shadow

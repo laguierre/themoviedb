@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:themoviedb/constants.dart';
 import 'package:themoviedb/models/cast_model.dart';
 import 'package:themoviedb/models/details_movie_model.dart';
@@ -146,9 +145,28 @@ class TheMovieApiService {
   ///Get Search Movie
   ///query  Movie Query
   ///language Request Language
+  // Future<List<Movie>> getSearchMovies(String query, String language) async {
+  //   List<Movie> movieList = [];
+  //   final url = Uri.https(urlTheMovieDB, '3/search/movie', {
+  //     'api_key': apiKey,
+  //     'language': language,
+  //     'query': query,
+  //   });
+  //   final response = await http.get(url);
+  //   print(url);
+  //   if (response.statusCode == 200) {
+  //     final decoded = await json.decode(response.body);
+  //     for (var movie in decoded['results']) {
+  //       movieList.add(Movie.fromJsonMap(movie));
+  //     }
+  //   }
+  //   return movieList;
+  // }
+
+  //TODO VER ACA
   Future<List<Movie>> getSearchMovies(String query, String language) async {
     List<Movie> movieList = [];
-    final url = Uri.https(urlTheMovieDB, '3/search/movie', {
+    final url = Uri.https(urlTheMovieDB, '3/search/multi', {
       'api_key': apiKey,
       'language': language,
       'query': query,

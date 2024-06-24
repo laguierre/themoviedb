@@ -5,7 +5,6 @@ import 'package:themoviedb/models/movie_model.dart';
 import 'package:themoviedb/pages/widgets.dart';
 import 'package:themoviedb/providers/movie_provider.dart';
 import 'package:themoviedb/responsive.dart';
-
 import 'details_page.dart';
 
 class OverviewText extends StatelessWidget {
@@ -72,18 +71,17 @@ class CastMovie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isTablet = SizeScreen.isTablet(context);
     double sizeBoxHeight = 130.sp;
     return SizedBox(
         height: sizeBoxHeight,
-        width: 300.sp,
+        width: 380.sp,
         child: PageView.builder(
             physics: const BouncingScrollPhysics(),
             padEnds: false,
             pageSnapping: false,
             controller: PageController(
               initialPage: 0,
-              viewportFraction: isTablet ? 0.2 : 0.35,
+              viewportFraction: 0.31,
             ),
             itemCount: performers.length,
             itemBuilder: (context, index) {
@@ -111,7 +109,7 @@ class CastMovie extends StatelessWidget {
                     Text(
                       performers[index].name,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
                     ),
                   ],
                 ),
@@ -136,7 +134,7 @@ class MovieDetailsInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
     return SizedBox(
-      height: SizeScreen.getHeight(context) * 0.7,
+      height: SizeScreen.getHeight(context) * 0.6,
       child: Row(
         children: [
           SizedBox(
@@ -144,7 +142,7 @@ class MovieDetailsInfo extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 20.sp),
+                SizedBox(height: 23.sp),
                 const CustomBackButton(),
                 const Spacer(),
                 RotatedBox(
@@ -161,7 +159,7 @@ class MovieDetailsInfo extends StatelessWidget {
                   size: kDescriptionDetailsText + 6,
                   color: Colors.white,
                 ),
-                isTablet ? SizedBox(height: 50.sp) : const Spacer(),
+                SizedBox(height: 20.sp),
                 RotatedBox(
                     quarterTurns: 3,
                     child: Text(
@@ -176,11 +174,11 @@ class MovieDetailsInfo extends StatelessWidget {
                   size: kDescriptionDetailsText + 8,
                   color: Colors.white,
                 ),
-                isTablet ? SizedBox(height: 50.sp) : const Spacer(),
+                isTablet ? SizedBox(height: 20.sp) : SizedBox(height: 50.sp),
                 RotatedBox(
                   quarterTurns: 3,
                   child: Text(
-                    movie.voteAverage.toString(),
+                    movie.voteAverage.toStringAsFixed(1),
                     style: TextStyle(
                         color: Colors.white, fontSize: kDescriptionDetailsText),
                   ),

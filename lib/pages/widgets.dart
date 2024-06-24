@@ -104,6 +104,7 @@ class PosterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ImageFade(
+      height: double.infinity,
       image: NetworkImage(image),
       duration: const Duration(milliseconds: 500),
       syncDuration: const Duration(milliseconds: 150),

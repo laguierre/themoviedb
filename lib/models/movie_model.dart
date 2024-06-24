@@ -14,6 +14,7 @@ class Movie {
     required this.adult,
     required this.overview,
     required this.releaseDate,
+    required this.mediaType,
   });
 
   String uniqueId = '';
@@ -31,22 +32,27 @@ class Movie {
   bool adult = false;
   String overview = '';
   String releaseDate = '';
+  String mediaType = '';
 
   factory Movie.fromJsonMap(dynamic json) => Movie(
-        voteCount: json['vote_count'] ?? "N/A",
+        voteCount: json['vote_count'] ?? 0,
         id: json['id'] ?? 0,
-        video: json['video'] ?? "N/A",
-        voteAverage: (json['vote_average'] / 1),
-        title: json['title'] ?? "N/A",
-        popularity: json['popularity'] / 1,
+        video: json['video'] ?? false,
+        voteAverage:
+            (json['vote_average'] != null) ? (json['vote_average'] / 1.0) : 0.0,
+        title: json['title'] ?? json['original_name'] ?? "N/A",
+        popularity:
+            (json['popularity'] != null) ? (json['popularity'] / 1) : 0.0,
         posterPath: json['poster_path'] ?? '',
         originalLanguage: json['original_language'] ?? "N/A",
-        originalTitle: json['original_title'] ?? "N/A",
-        genreIds: json['genre_ids'].cast<int>() ?? "N/A",
+        originalTitle: json['original_title'] ?? json['original_name'] ?? "N/A",
+        genreIds:
+            json['genre_ids'] != null ? json['genre_ids'].cast<int>() : [],
         backdropPath: json['backdrop_path'] ?? '',
-        adult: json['adult'] ?? "N/A",
+        adult: json['adult'] ?? false,
         overview: json['overview'] ?? "N/A",
         releaseDate: json['release_date'] ?? "N/A",
+        mediaType: json["media_type"] ?? "N/A",
       );
 
   getPosterImg() {
