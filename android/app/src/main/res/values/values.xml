@@ -1,0 +1,9 @@
+<resources>
+    <string name="default_web_client_id">795746438495-dli34jtgi7077t3s1vokvadjsfh18efg.apps.googleusercontent.com</string>
+    <string name="firebase_database_url">https://mypersonalmovies-7228c.firebaseio.com</string>
+    <string name="gcm_defaultSenderId">795746438495</string>
+    <string name="google_api_key">AIzaSyARbIm2Q3USTpzsyUL5RUdhw-b3BImoo0E</string>
+    <string name="google_app_id">1:795746438495:android:79019824385ff4f576baea</string>
+    <string name="google_crash_reporting_api_key">AIzaSyARbIm2Q3USTpzsyUL5RUdhw-b3BImoo0E</string>
+    <string name="project_id">mypersonalmovies-7228c</string>
+</resources>
