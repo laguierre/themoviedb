@@ -177,18 +177,22 @@ class _MyPersonalCollectionState extends State<MyPersonalCollection> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            const CustomBackButton(),
-                            SizedBox(width: 15.sp),
-                            Text(
-                              language == 'es-ES'
-                                  ? 'Mis películas'
-                                  : 'My Personal Collection',
-                              style: TextStyle(
-                                  color: kTextDetailsColor, fontSize: 24.sp),
-                            )
-                          ],
+                        SizedBox(
+                          height: 35.h,
+                          child: Row(
+
+                            children: [
+                              const CustomBackButton(),
+                              SizedBox(width: 15.sp),
+                              Text(
+                                language == 'es-ES'
+                                    ? 'Mis películas'
+                                    : 'My Personal Collection',
+                                style: TextStyle(
+                                    color: kTextDetailsColor, fontSize: 24.sp),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(height: 20.sp),
                         Row(

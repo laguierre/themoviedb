@@ -132,20 +132,20 @@ class MovieDetailsInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet = SizeScreen.isTablet(context);
+    double sizeScreen = isTablet?SizeScreen.getWidth(context) * 0.2:SizeScreen.getWidth(context) * 0.23;
     return SizedBox(
       height: SizeScreen.getHeight(context) * 0.6,
       child: Row(
         children: [
           SizedBox(
-            width: isTablet
-                ? SizeScreen.getWidth(context) * 0.2
-                : SizeScreen.getWidth(context) * 0.23,
+            width: sizeScreen,
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 23.h),
                 //TODO Hacerlo más reactivo
-                const CustomBackButton(),
+                SizedBox(width: sizeScreen * 0.6, child: const CustomBackButton()),
                 const Spacer(),
                 RotatedBox(
                   quarterTurns: 3,

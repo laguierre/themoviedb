@@ -141,22 +141,23 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(2.sp),
+    return GestureDetector(child: Container(
+      padding: EdgeInsets.all(10.sp),
       decoration: BoxDecoration(
         color: const Color(0xFF2D2C2C),
         borderRadius: BorderRadius.circular(10.sp),
       ),
-      child: IconButton(
-        padding: EdgeInsets.only(left: 8.sp),
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
+      child: Image.asset('lib/assets/images/left-arrow.png', color: Colors.white,),
+      // child: IconButton(
+      //   padding: EdgeInsets.only(left: 8.sp),
+      //   icon: const Icon(
+      //     Icons.arrow_back_ios,
+      //     color: Colors.white,
+      //   ),
+      //   onPressed: () {
+      //     Navigator.pop(context);
+      //   },
+      // ),
+    ), onTap: (){Navigator.pop(context);});
   }
 }

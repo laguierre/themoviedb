@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(15.w, 20.h, 15.w, 0),
+                          margin: EdgeInsets.fromLTRB(15.w, 25.h, 15.w, 0),
                           height: 45.h,
                           width: double.infinity,
                           child: Row(
